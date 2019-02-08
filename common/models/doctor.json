@@ -1,0 +1,36 @@
+{
+  "name": "doctor",
+  "base": "User",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "professionalNumber": {
+      "type": "string",
+      "required": true
+    },
+    "type": {
+      "type": "string",
+      "required": true
+    },
+    "createdAt": {
+      "type": "date",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "consultations": {
+      "type": "hasMany",
+      "model": "consultation",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
