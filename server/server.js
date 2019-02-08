@@ -4,10 +4,8 @@ var loopback = require('loopback');
 var boot = require('loopback-boot');
 var https = require('https');
 var sslConfig = require('./ssl/ssl-config');
-const fileUpload = require('express-fileupload');
 
 const app = module.exports = loopback();
-app.use(fileUpload());
 
 var options = {
   key: sslConfig.privateKey,
