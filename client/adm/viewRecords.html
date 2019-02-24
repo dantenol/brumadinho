@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/master.css" />
+    <title>Visualizar consultas</title>
+  </head>
+  <body>
+    <header>
+      <img
+        src="https://naacao.com.br/wp-content/uploads/2018/03/NAACAO.png"
+        alt=""
+      />
+    </header>
+    <main>
+      <div class="filters">
+        <div class="group">
+          <select id="doctor">
+            <option disabled selected></option>
+          </select>
+          <span class="highlight"></span> <span class="bar"></span>
+          <label>Profissional</label>
+        </div>
+      </div>
+      <div class="result">
+        <table>
+          <thead>
+            <tr>
+              <th>Paciente</th>
+              <th>Entereço</th>
+              <th>Data</th>
+              <th>Profissional</th>
+            </tr>
+          </thead>
+          <tbody id="resultLine">
+
+          </tbody>
+        </table>
+      </div>
+    </main>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', async () => {
+        let names = await fetch('https://localhost/api/doctors', {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        });
+        let consultations = await fetch(
+          'https://localhost/api/consultations?access_token=' +
+            localStorage.access_token,
+          {
+            method: 'GET',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        consultations = await consultations.json();
+        names = await names.json();
+        const list = document.getElementById('doctor');
+        for (var i = 0; i < names.length; i++) {
+          var option = document.createElement('option');
+          option.value = names[i].name;
+          option.text = names[i].name;
+          list.appendChild(option);
+        }
+        for (var i = 0; i < consultations.length; i++) {
+          var tableRef = document.getElementById('resultLine');
+          var newRow   = tableRef.insertRow(tableRef.rows.length);
+          var name  = newRow.insertCell(0);
+          name.appendChild(document.createTextNode(consultations[i].patientName));
+          var address  = newRow.insertCell(1);
+          address.appendChild(document.createTextNode(consultations[i].address));
+          var date  = newRow.insertCell(2);
+          const parsedDate = new Date(consultations[i].date);
+          date.appendChild(document.createTextNode(parsedDate.getUTCDate() + '/' + (parsedDate.getUTCMonth() + 1)));
+          var doctorName  = newRow.insertCell(3);
+          doctorName.appendChild(document.createTextNode(consultations[i].doctorName));
+        }
+        console.log(names);
+        console.log(consultations);
+      });
+    </script>
+  </body>
+</html>

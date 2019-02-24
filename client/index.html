@@ -43,45 +43,54 @@
       <div class="group">
         <select id="doctor">
           <option disabled selected></option>
-          <option value="Daniel Reis">Daniel Reis</option>
-          <option value="Maria Clara Aguiar">Maria Clara Aguiar</option>
-          <option value="Paula Pimenta">Paula Pimenta</option>
-          <option value="Christiane Rezente">Christiane Rezente</option>
-          <option value="Flavia Andrade">Flavia Andrade</option>
-          <option value="Fernanda Diniz">Fernanda Diniz</option>
-          <option value="Marina Cunha">Marina Cunha</option>
-          <option value="Thomaz Augusto">Thomaz Augusto</option>
-          <option value="Vitor Polognano">Vitor Polognano</option>
-          <option value="Luciclei Ariana">Luciclei Ariana</option>
-          <option value="Camila Ribeiro">Camila Ribeiro</option>
         </select>
         <span class="highlight"></span> <span class="bar"></span>
         <label>Profissional</label>
       </div>
       <button id="submit">enviar</button>
       <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', async () => {
+          let names = await fetch('https://localhost/api/doctors', {
+            method: 'GET',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          });
+          names = await names.json();
+          const list = document.getElementById('doctor');
+          for (var i = 0; i < names.length; i++) {
+            var option = document.createElement('option');
+            option.value = names[i].name;
+            option.text = names[i].name;
+            list.appendChild(option);
+          }
+          console.log(names);
+        });
+
         document
-          .getElementById("submit")
-          .addEventListener("click", send, false);
+          .getElementById('submit')
+          .addEventListener('click', send, false);
+
         async function send() {
           const data = {
-            patientName: document.getElementById("name").value,
-            date: new Date(document.getElementById("date").value),
-            startTime: document.getElementById("startTime").value,
-            endTime: document.getElementById("endTime").value,
-            address: document.getElementById("address").value,
-            doctorName: document.getElementById("doctor").value
+            patientName: document.getElementById('name').value,
+            date: new Date(document.getElementById('date').value),
+            startTime: document.getElementById('startTime').value,
+            endTime: document.getElementById('endTime').value,
+            address: document.getElementById('address').value,
+            doctorName: document.getElementById('doctor').value,
           };
-          const sure = confirm("Tem certeza que quer salvar esse atendimento?");
+          const sure = confirm('Tem certeza que quer salvar esse atendimento?');
           const rawResponse = await fetch(
-            "https://equipe.naacao.com.br/api/consultations",
+            'https://equipe.naacao.com.br/api/consultations',
             {
-              method: "POST",
+              method: 'POST',
               headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
               },
-              body: JSON.stringify(data)
+              body: JSON.stringify(data),
             }
           );
           const content = await rawResponse.json();
@@ -89,7 +98,7 @@
           if (content.error) {
             alert(content.error.message);
           } else {
-            location.reload();
+            location.href = 'index.html';
           }
         }
       </script>

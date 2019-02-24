@@ -1,6 +1,6 @@
 {
   "name": "doctor",
-  "base": "User",
+  "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
@@ -31,6 +31,28 @@
       "foreignKey": ""
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "find"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY",
+      "property": "create"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "create"
+    }
+  ],
   "methods": {}
 }

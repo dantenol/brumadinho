@@ -7,6 +7,11 @@ body {
   margin: 0;
 }
 
+a {
+  color: inherit; /* blue colors for links too */
+  text-decoration: inherit; /* no underline */
+}
+
 header {
   width: 100%;
   height: 64px;
@@ -22,6 +27,10 @@ main {
   display: flex;
   flex-direction: column;
   padding: 12px;
+}
+
+table {
+  border-collapse: collapse;
 }
 
 .row {
@@ -102,7 +111,7 @@ select:valid ~ label {
 }
 .bar:before,
 .bar:after {
-  content: "";
+  content: '';
   height: 2px;
   width: 0;
   bottom: 1px;
@@ -181,4 +190,38 @@ input:focus ~ .highlight {
   font-size: 20px;
   padding: 8px;
   border-radius: 5px;
+}
+
+.buttonsContainer .box {
+  margin-bottom: 24px;
+  height: 30vh;
+  width: 100%;
+  background: #52c7bc;
+  border: 1px solid #787878;
+  text-transform: uppercase;
+  font-size: 30px;
+  border-radius: 5px;
+  display: flex;
+  text-align: center;
+  align-items: center;
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+}
+
+.result table {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+  min-width: 100%;
+}
+
+.result tbody td,
+.result thead th {
+  text-align: center;
+  border-bottom: 1px solid #5b5b5b;
+  padding: 8px;
+  white-space: nowrap;
 }

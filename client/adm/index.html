@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/master.css" />
+    <title>Login administrativo</title>
+  </head>
+  <body>
+    <header>
+      <img
+        src="https://naacao.com.br/wp-content/uploads/2018/03/NAACAO.png"
+        alt=""
+      />
+    </header>
+    <main>
+      <div class="group">
+        <input type="text" id="username" required />
+        <span class="highlight"></span> <span class="bar"></span>
+        <label>Usuário</label>
+      </div>
+      <div class="group">
+        <input type="password" id="password" required />
+        <span class="highlight"></span> <span class="bar"></span>
+        <label>Senha</label>
+      </div>
+      <button id="submit">Entrar</button>
+    </main>
+    <script type="text/javascript">
+      document.getElementById('submit').addEventListener('click', send, false);
+
+      document
+        .getElementById('password')
+        .addEventListener('keyup', function(event) {
+          if (event.keyCode === 13) {
+            event.preventDefault();
+            send();
+          }
+        });
+
+      async function send() {
+        const data = {
+          username: document.getElementById('username').value,
+          password: document.getElementById('password').value,
+        };
+        const rawResponse = await fetch('https://localhost/api/users/login', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        const content = await rawResponse.json();
+        console.log(content);
+        if (content.error) {
+          alert(content.error.message);
+        } else {
+          localStorage.setItem('access_token', content.id);
+          location.href = "home.html";
+        }
+      }
+    </script>
+  </body>
+</html>

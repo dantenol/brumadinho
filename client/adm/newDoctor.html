@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/master.css" />
+    <title>Novo profissional</title>
+  </head>
+  <body>
+    <header>
+      <img
+        src="https://naacao.com.br/wp-content/uploads/2018/03/NAACAO.png"
+        alt=""
+      />
+    </header>
+    <main>
+      <div class="group">
+        <input type="text" id="name" required />
+        <span class="highlight"></span> <span class="bar"></span>
+        <label>Nome do profissional</label>
+      </div>
+      <div class="group">
+        <input type="text" id="number" required />
+        <span class="highlight"></span> <span class="bar"></span>
+        <label>Numero de registro</label>
+      </div>
+      <div class="group">
+        <select id="type">
+          <option disabled selected></option>
+          <option value="social assistant">Assistência social</option>
+          <option value="psycologist">Psicologia</option>
+        </select>
+        <span class="highlight"></span> <span class="bar"></span>
+        <label>Tipo</label>
+      </div>
+      <button id="submit">enviar</button>
+      <script type="text/javascript">
+        document.getElementById('submit').addEventListener('click', send, false);
+
+        async function send() {
+          const data = {
+            professionalNumber: document.getElementById('number').value,
+            name: document.getElementById('name').value,
+            type: document.getElementById('type').value,
+            createdAt: new Date(),
+          };
+          const rawResponse = await fetch('https://localhost/api/doctors/?access_token=' +
+            localStorage.access_token, {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          });
+          const content = await rawResponse.json();
+          console.log(content);
+          if (content.error) {
+            alert(content.error.message);
+          } else {
+            alert('Profissional adicionado com sucesso!');
+            location.href = "home.html";
+          }
+        }
+      </script>
+  </body>
+</html>
