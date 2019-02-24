@@ -41,7 +41,7 @@
     </main>
     <script type="text/javascript">
       document.addEventListener('DOMContentLoaded', async () => {
-        let names = await fetch('https://localhost/api/doctors', {
+        let names = await fetch('https://equipe.naacao.com.br/api/doctors', {
           method: 'GET',
           headers: {
             Accept: 'application/json',
@@ -49,7 +49,7 @@
           },
         });
         let consultations = await fetch(
-          'https://localhost/api/consultations?access_token=' +
+          'https://equipe.naacao.com.br/api/consultations?access_token=' +
             localStorage.access_token,
           {
             method: 'GET',

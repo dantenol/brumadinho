@@ -44,7 +44,7 @@
             type: document.getElementById('type').value,
             createdAt: new Date(),
           };
-          const rawResponse = await fetch('https://localhost/api/doctors/?access_token=' +
+          const rawResponse = await fetch('https://equipe.naacao.com.br/api/doctors/?access_token=' +
             localStorage.access_token, {
             method: 'POST',
             headers: {
