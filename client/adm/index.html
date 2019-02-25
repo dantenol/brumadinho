@@ -27,6 +27,10 @@
       <button id="submit">Entrar</button>
     </main>
     <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', () => {
+        location.href = 'home.html';
+      });
+
       document.getElementById('submit').addEventListener('click', send, false);
 
       document
@@ -43,21 +47,24 @@
           username: document.getElementById('username').value,
           password: document.getElementById('password').value,
         };
-        const rawResponse = await fetch('https://equipe.naacao.com.br/api/users/login', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        });
+        const rawResponse = await fetch(
+          'https://equipe.naacao.com.br/api/users/login',
+          {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          }
+        );
         const content = await rawResponse.json();
         console.log(content);
         if (content.error) {
           alert(content.error.message);
         } else {
           localStorage.setItem('access_token', content.id);
-          location.href = "home.html";
+          location.href = 'home.html';
         }
       }
     </script>
