@@ -12,6 +12,7 @@
         src="https://naacao.com.br/wp-content/uploads/2018/03/NAACAO.png"
         alt=""
       />
+      <button onclick="quit()">SAIR</button>
     </header>
     <main>
       <div class="buttonsContainer">
@@ -23,5 +24,11 @@
         </a>
       </div>
     </main>
+    <script type="text/javascript">
+      function quit() {
+        localStorage.clear();
+        location.href = "index.html"
+      }
+    </script>
   </body>
 </html>

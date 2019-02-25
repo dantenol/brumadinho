@@ -8,6 +8,7 @@
   </head>
   <body>
     <header>
+      <a href="https://equipe.naacao.com.br">&#8592;</a>
       <img
         src="https://naacao.com.br/wp-content/uploads/2018/03/NAACAO.png"
         alt=""
@@ -28,7 +29,9 @@
     </main>
     <script type="text/javascript">
       document.addEventListener('DOMContentLoaded', () => {
-        location.href = 'home.html';
+        if (localStorage.access_token) {
+          location.href = 'home.html';
+        }
       });
 
       document.getElementById('submit').addEventListener('click', send, false);

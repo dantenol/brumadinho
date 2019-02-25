@@ -225,3 +225,19 @@ input:focus ~ .highlight {
   padding: 8px;
   white-space: nowrap;
 }
+
+header a {
+  position: absolute;
+  font-size: 44px;
+  color: rgb(0, 134, 131);
+  left: 0px;
+}
+
+header button {
+  position: absolute;
+  font-size: 34px;
+  color: rgb(0, 134, 131);
+  right: 0px;
+  background: none;
+  border: none;
+}
