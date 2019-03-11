@@ -65,6 +65,7 @@ table {
 }
 
 input,
+textarea,
 select {
   font-size: 18px;
   padding: 10px 10px 10px 5px;
@@ -76,6 +77,7 @@ select {
 }
 
 input:focus,
+textarea:focus,
 select:focus {
   outline: none;
 }
@@ -96,7 +98,9 @@ label {
 
 /* active state */
 input:focus ~ label,
+textarea:focus ~ label,
 input:valid ~ label,
+textarea:valid ~ label,
 select:valid ~ label {
   top: -20px;
   font-size: 14px;
@@ -131,6 +135,8 @@ select:valid ~ label {
 /* active state */
 input:focus ~ .bar:before,
 input:focus ~ .bar:after,
+textarea:focus ~ .bar:before,
+textarea:focus ~ .bar:after,
 select:focus ~ .bar:before,
 select:focus ~ .bar:after {
   width: 50%;

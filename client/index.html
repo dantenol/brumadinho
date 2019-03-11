@@ -40,6 +40,12 @@
         <span class="highlight"></span> <span class="bar"></span>
         <label>Endereço</label>
       </div>
+
+      <div class="group">
+        <textarea id="comments" autocomplete="off" required rows="3"></textarea>
+        <span class="highlight"></span> <span class="bar"></span>
+        <label>Observações</label>
+      </div>
       <div class="group">
         <select id="doctor">
           <option disabled selected></option>
@@ -79,6 +85,7 @@
             startTime: document.getElementById('startTime').value,
             endTime: document.getElementById('endTime').value,
             address: document.getElementById('address').value,
+            comments: document.getElementById('comments').value,
             doctorName: document.getElementById('doctor').value,
           };
           const sure = confirm('Tem certeza que quer salvar esse atendimento?');

@@ -29,6 +29,11 @@
     "address": {
       "type": "string",
       "required": true
+    },
+    "comments": {
+      "type": "string",
+      "required": false,
+      "default": ""
     }
   },
   "validations": [],
