@@ -36,18 +36,17 @@
         </div>
       </div>
       <div class="result">
-        <table>
+        <table id="table">
           <thead>
             <tr>
               <th>Paciente</th>
               <th>Entereço</th>
               <th>Data</th>
               <th>Profissional</th>
+              <th>Observações</th>
             </tr>
           </thead>
-          <tbody id="resultLine">
-
-          </tbody>
+          <tbody id="resultLine"></tbody>
         </table>
       </div>
     </main>
@@ -82,16 +81,30 @@
         }
         for (var i = 0; i < consultations.length; i++) {
           var tableRef = document.getElementById('resultLine');
-          var newRow   = tableRef.insertRow(tableRef.rows.length);
-          var name  = newRow.insertCell(0);
-          name.appendChild(document.createTextNode(consultations[i].patientName));
-          var address  = newRow.insertCell(1);
-          address.appendChild(document.createTextNode(consultations[i].address));
-          var date  = newRow.insertCell(2);
+          var newRow = tableRef.insertRow(tableRef.rows.length);
+          var name = newRow.insertCell(0);
+          name.appendChild(
+            document.createTextNode(consultations[i].patientName)
+          );
+          var address = newRow.insertCell(1);
+          address.appendChild(
+            document.createTextNode(consultations[i].address)
+          );
+          var date = newRow.insertCell(2);
           const parsedDate = new Date(consultations[i].date);
-          date.appendChild(document.createTextNode(parsedDate.getUTCDate() + '/' + (parsedDate.getUTCMonth() + 1)));
-          var doctorName  = newRow.insertCell(3);
-          doctorName.appendChild(document.createTextNode(consultations[i].doctorName));
+          date.appendChild(
+            document.createTextNode(
+              parsedDate.getUTCDate() + '/' + (parsedDate.getUTCMonth() + 1)
+            )
+          );
+          var doctorName = newRow.insertCell(3);
+          doctorName.appendChild(
+            document.createTextNode(consultations[i].doctorName)
+          );
+          var comments = newRow.insertCell(4);
+          comments.appendChild(
+            document.createTextNode(consultations[i].comments || '')
+          );
         }
         console.log(names);
         console.log(consultations);
