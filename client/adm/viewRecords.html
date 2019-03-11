@@ -17,11 +17,22 @@
     <main>
       <div class="filters">
         <div class="group">
-          <select id="doctor">
-            <option disabled selected></option>
+          <select id="doctor" onchange="filter('doctor', 3)">
+            <option selected></option>
           </select>
           <span class="highlight"></span> <span class="bar"></span>
           <label>Profissional</label>
+        </div>
+        <div class="group">
+          <input
+            type="text"
+            id="patient"
+            onkeyup="filter('patient', 0)"
+            autocomplete="off"
+            required
+          />
+          <span class="highlight"></span> <span class="bar"></span>
+          <label>Nome do paciente</label>
         </div>
       </div>
       <div class="result">
@@ -85,6 +96,29 @@
         console.log(names);
         console.log(consultations);
       });
+
+      function filter(type, idx) {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById(type);
+        console.log(input.value);
+        filter = input.value.toUpperCase();
+        table = document.querySelector('#table');
+        tr = table.getElementsByTagName('tr');
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName('td')[idx];
+          if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = '';
+            } else {
+              tr[i].style.display = 'none';
+            }
+          }
+        }
+      }
     </script>
   </body>
 </html>
