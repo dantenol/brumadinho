@@ -239,6 +239,11 @@ header a {
   left: 0px;
 }
 
+#upload img{
+  width: 30px;
+  height: 30px;
+}
+
 header button {
   position: absolute;
   font-size: 34px;
