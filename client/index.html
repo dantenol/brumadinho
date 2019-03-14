@@ -117,7 +117,7 @@
       document.addEventListener('DOMContentLoaded', async () => {
         let names;
         let arr = [];
-        if (!JSON.parse(localStorage.toSend).length) {
+        if (!localStorage.toSend) {
           document.getElementById('upload').style.display = 'none';
         }
         try {
