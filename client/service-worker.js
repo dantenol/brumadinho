@@ -32,4 +32,13 @@ self.addEventListener('fetch', event => {
         return fetch(event.request);
       })
     );
+    evt.waitUntil(update(evt.request));
 });
+
+function update(request) {
+  return caches.open(cacheName).then(function (cache) {
+    return fetch(request).then(function (response) {
+      return cache.put(request, response);
+    });
+  });
+}
