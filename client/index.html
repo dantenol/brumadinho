@@ -181,7 +181,11 @@
           console.log(data);
           alert('Registros enviados com sucesso!');
           var myFilterArray = data.filter(Boolean);
-          localStorage.setItem('toSend', JSON.stringify(myFilterArray));
+          if (myFilterArray.length) {
+            localStorage.setItem('toSend', JSON.stringify(myFilterArray));
+          } else {
+            localStorage.removeItem('toSend');
+          }
         });
       }
 
