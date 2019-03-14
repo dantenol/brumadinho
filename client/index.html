@@ -103,7 +103,7 @@
         const riscos = [];
 
         document.addEventListener('DOMContentLoaded', async () => {
-          let names = await fetch('https://localhost/api/doctors', {
+          let names = await fetch('https://equipe.naacao.com.br/api/doctors', {
             method: 'GET',
             headers: {
               Accept: 'application/json',
@@ -140,7 +140,7 @@
           };
           const sure = confirm('Tem certeza que quer salvar esse atendimento?');
           const rawResponse = await fetch(
-            'https://localhost/api/consultations',
+            'https://equipe.naacao.com.br/api/consultations',
             {
               method: 'POST',
               headers: {
