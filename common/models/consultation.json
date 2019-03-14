@@ -14,13 +14,9 @@
       "type": "date",
       "required": true
     },
-    "startTime": {
-      "type": "string",
-      "required": true
-    },
-    "endTime": {
-      "type": "string",
-      "required": true
+    "riscos": {
+      "type": ["string"],
+      "required": false
     },
     "doctor": {
       "type": "string",

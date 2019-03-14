@@ -25,22 +25,67 @@
         <label>Data</label>
       </div>
       <div class="group">
-        <input type="time" id="startTime" required />
-        <span class="highlight"></span> <span class="bar"></span>
-        <label>Hora de início</label>
-      </div>
-      <div class="group">
-        <input type="time" id="endTime" required />
-        <span class="highlight"></span> <span class="bar"></span>
-        <label>Hora de término</label>
-      </div>
-
-      <div class="group">
         <input type="text" id="address" autocomplete="off" required />
         <span class="highlight"></span> <span class="bar"></span>
         <label>Endereço</label>
       </div>
-
+      <div id="risks">
+        <div class="row">
+          <div class="half">
+            <input type="checkbox" onchange="risk('contatoComLama')" /> Teve
+            contato direto com a lama
+          </div>
+          <div class="half">
+            <input type="checkbox" onchange="risk('ideiaSuicida')" /> Ideação
+            suicída
+          </div>
+        </div>
+        <div class="row">
+          <div class="half">
+            <input type="checkbox" onchange="risk('tentativaSuicida')" />
+            Tentativa de suicídio
+          </div>
+          <div class="half">
+            <input type="checkbox" onchange="risk('amigoFamiliarMorto')" />
+            Algum familiar ou amigo morto/desaparecido
+          </div>
+        </div>
+        <div class="row">
+          <div class="half">
+            <input type="checkbox" onchange="risk('testemunhouAcidente')" />
+            Testemunhou o acidente
+          </div>
+          <div class="half">
+            <input type="checkbox" onchange="risk('perdaPropriedade')" /> Perda
+            de propriedade
+          </div>
+        </div>
+        <div class="row">
+          <div class="half">
+            <input type="checkbox" onchange="risk('perdaLaboral')" /> Perda
+            laboral
+          </div>
+          <div class="half">
+            <input type="checkbox" onchange="risk('alcoolDroga')" /> Problemas
+            com álcool/drogas
+          </div>
+        </div>
+        <div class="row">
+          <div class="half">
+            <input type="checkbox" onchange="risk('luto')" /> Luto complicado
+          </div>
+          <div class="half">
+            <input type="checkbox" onchange="risk('violenciaDomestica')" />
+            Violência doméstica
+          </div>
+        </div>
+        <div class="row">
+          <div class="half">
+            <input type="checkbox" onchange="risk('abusoInfantil')" /> Abuso
+            infantil ou mau-trato
+          </div>
+        </div>
+      </div>
       <div class="group">
         <textarea id="comments" autocomplete="off" required rows="3"></textarea>
         <span class="highlight"></span> <span class="bar"></span>
@@ -55,8 +100,10 @@
       </div>
       <button id="submit">enviar</button>
       <script type="text/javascript">
+        const riscos = [];
+
         document.addEventListener('DOMContentLoaded', async () => {
-          let names = await fetch('https://equipe.naacao.com.br/api/doctors', {
+          let names = await fetch('https://localhost/api/doctors', {
             method: 'GET',
             headers: {
               Accept: 'application/json',
@@ -78,19 +125,22 @@
           .getElementById('submit')
           .addEventListener('click', send, false);
 
+        function risk(prop) {
+          riscos.push(prop)
+        }
+
         async function send() {
           const data = {
             patientName: document.getElementById('name').value,
             date: new Date(document.getElementById('date').value),
-            startTime: document.getElementById('startTime').value,
-            endTime: document.getElementById('endTime').value,
             address: document.getElementById('address').value,
             comments: document.getElementById('comments').value,
             doctorName: document.getElementById('doctor').value,
+            riscos
           };
           const sure = confirm('Tem certeza que quer salvar esse atendimento?');
           const rawResponse = await fetch(
-            'https://equipe.naacao.com.br/api/consultations',
+            'https://localhost/api/consultations',
             {
               method: 'POST',
               headers: {
