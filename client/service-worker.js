@@ -5,6 +5,7 @@ const precacheResources = [
   'css/master.css',
   'img/reload.png',
   'img/NAACAO.png',
+  'img/favicon.ico',
 ];
 
 self.addEventListener('install', event => {
