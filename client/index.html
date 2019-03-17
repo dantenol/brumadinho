@@ -108,6 +108,13 @@
           <span class="highlight"></span> <span class="bar"></span>
           <label>Profissional</label>
         </div>
+        <div class="group">
+          <select id="doctor2">
+            <option disabled selected></option>
+          </select>
+          <span class="highlight"></span> <span class="bar"></span>
+          <label>Segundo profissional</label>
+        </div>
       </form>
       <button id="submit">enviar</button>
     </main>
@@ -117,7 +124,7 @@
       document.addEventListener('DOMContentLoaded', async () => {
         let names;
         let arr = [];
-        if (!localStorage.toSend) {
+        if (!JSON.parse(localStorage.toSend).length) {
           document.getElementById('upload').style.display = 'none';
         }
         try {
@@ -136,11 +143,16 @@
           names = JSON.parse(localStorage.doctors);
         }
         const list = document.getElementById('doctor');
+        const list2 = document.getElementById('doctor2');
         for (var i = 0; i < names.length; i++) {
           var option = document.createElement('option');
+          var option2 = document.createElement('option');
           option.value = names[i].name;
           option.text = names[i].name;
+          option2.value = names[i].name;
+          option2.text = names[i].name;
           list.appendChild(option);
+          list2.appendChild(option2);
         }
         console.log(names);
       });
@@ -196,6 +208,7 @@
           address: document.getElementById('address').value,
           comments: document.getElementById('comments').value,
           doctorName: document.getElementById('doctor').value,
+          doctor2Name: document.getElementById('doctor2').value,
           riscos,
         };
         if (
