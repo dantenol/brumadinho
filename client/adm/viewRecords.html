@@ -43,6 +43,7 @@
               <th>Entereço</th>
               <th>Data</th>
               <th>Profissional</th>
+              <th>Profissional 2</th>
               <th>Observações</th>
             </tr>
           </thead>
@@ -101,7 +102,11 @@
           doctorName.appendChild(
             document.createTextNode(consultations[i].doctorName)
           );
-          var comments = newRow.insertCell(4);
+          var doctor2Name = newRow.insertCell(4);
+          doctor2Name.appendChild(
+            document.createTextNode(consultations[i].doctor2Name || '')
+          );
+          var comments = newRow.insertCell(5);
           comments.appendChild(
             document.createTextNode(consultations[i].comments || '')
           );
