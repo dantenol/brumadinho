@@ -160,7 +160,12 @@
       document.getElementById('submit').addEventListener('click', save, false);
 
       function risk(prop) {
-        riscos.push(prop);
+        const idx = riscos.indexOf(prop)
+        if (idx > -1) {
+          riscos.splice(idx,1)
+        } else {
+          riscos.push(prop);
+        }
       }
 
       function upload() {
