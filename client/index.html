@@ -128,7 +128,7 @@
           document.getElementById('upload').style.display = 'none';
         }
         try {
-          names = await fetch('https://equipe.naacao.com.br/api/doctors', {
+          names = await fetch(`https://${location.hostname}/api/doctors`, {
             method: 'GET',
             headers: {
               Accept: 'application/json',
@@ -174,7 +174,7 @@
           data.map(async (r, i) => {
             try {
               const rawResponse = await fetch(
-                'https://equipe.naacao.com.br/api/consultations',
+                `https://${location.hostname}/api/consultations`,
                 {
                   method: 'POST',
                   headers: {

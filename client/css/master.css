@@ -208,7 +208,7 @@ select:focus ~ .bar:after {
   font-size: 30px;
   border-radius: 5px;
   display: flex;
-  text-align: center;
+  justify-content: center;
   align-items: center;
 }
 

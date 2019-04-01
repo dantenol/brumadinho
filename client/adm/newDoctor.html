@@ -8,7 +8,7 @@
   </head>
   <body>
     <header>
-      <a href="https://equipe.naacao.com.br/adm">&#8592;</a>
+      <a href="https://localhost/adm">&#8592;</a>
       <img
         src="https://naacao.com.br/wp-content/uploads/2018/03/NAACAO.png"
         alt=""
@@ -45,7 +45,7 @@
             type: document.getElementById('type').value,
             createdAt: new Date(),
           };
-          const rawResponse = await fetch('https://equipe.naacao.com.br/api/doctors/?access_token=' +
+          const rawResponse = await fetch('https://localhost/api/doctors/?access_token=' +
             localStorage.access_token, {
             method: 'POST',
             headers: {

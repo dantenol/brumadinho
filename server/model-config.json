@@ -47,5 +47,9 @@
   "user": {
     "dataSource": "mongodb",
     "public": true
+  },
+  "dreammakers": {
+    "dataSource": "mongodb",
+    "public": true
   }
 }

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/master.css" />
+    <title>Novo DreamMaker</title>
+  </head>
+  <body>
+    <header>
+      <a href="https://localhost/adm">&#8592;</a>
+      <img
+        src="https://naacao.com.br/wp-content/uploads/2018/03/NAACAO.png"
+        alt=""
+      />
+    </header>
+    <main>
+      <div class="group">
+        <input type="text" id="name" autocomplete="off" required />
+        <span class="highlight"></span> <span class="bar"></span>
+        <label>Nome completo</label>
+      </div>
+      <div class="group">
+        <input type="email" id="email" autocomplete="off" required />
+        <span class="highlight"></span> <span class="bar"></span>
+        <label>email</label>
+      </div>
+      <div class="group">
+        <input type="phone" id="phone" autocomplete="off" required />
+        <span class="highlight"></span> <span class="bar"></span>
+        <label>Celular</label>
+      </div>
+      <div class="group">
+        <input type="text" id="profissao" autocomplete="off" required />
+        <span class="highlight"></span> <span class="bar"></span>
+        <label>Profissão</label>
+      </div>
+      <div id="days">
+        <div class="row">
+          <div class="half">
+            <input type="checkbox" onchange="dias('segunda')" /> Segunda-feira
+          </div>
+          <div class="half">
+            <input type="checkbox" onchange="dias('terca')" /> Terça-feira
+          </div>
+        </div>
+        <div class="row">
+          <div class="half">
+            <input type="checkbox" onchange="dias('quarta')" />
+            Quarta-feira
+          </div>
+          <div class="half">
+            <input type="checkbox" onchange="dias('quinta')" />
+            Quinta-feira
+          </div>
+        </div>
+        <div class="row">
+          <div class="half">
+            <input type="checkbox" onchange="dias('setxa')" />
+            Sexta-feira
+          </div>
+          <div class="half">
+            <input type="checkbox" onchange="dias('sabado')" />
+            Sábado
+          </div>
+        </div>
+      </div>
+      <button id="submit">enviar</button>
+      <script type="text/javascript">
+        const dia = [];
+        document.getElementById('submit').addEventListener('click', send, false);
+
+        function dias(prop) {
+          const idx = dia.indexOf(prop)
+          if (idx > -1) {
+            dia.splice(idx,1)
+          } else {
+            dia.push(prop);
+          }
+        }
+
+        async function send() {
+          const data = {
+            nome: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            telefone: document.getElementById('phone').value,
+            profissao: document.getElementById('profissao').value,
+            dias: dia,
+            createdAt: new Date(),
+          };
+          const rawResponse = await fetch(`https://${location.hostname}/api/dreammakers/?access_token=` +
+            localStorage.access_token, {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          });
+          const content = await rawResponse.json();
+          console.log(content);
+          if (content.error) {
+            alert(content.error.message);
+          } else {
+            alert('DreamMaker adicionado com sucesso!');
+            location.href = "home.html";
+          }
+        }
+      </script>
+  </body>
+</html>

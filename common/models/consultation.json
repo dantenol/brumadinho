@@ -15,7 +15,9 @@
       "required": true
     },
     "riscos": {
-      "type": ["string"],
+      "type": [
+        "string"
+      ],
       "required": false
     },
     "doctor": {
