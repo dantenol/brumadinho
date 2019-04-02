@@ -119,7 +119,7 @@
       <button id="submit">enviar</button>
     </main>
     <script type="text/javascript">
-      const riscos = [];
+      let riscos = [];
 
       document.addEventListener('DOMContentLoaded', async () => {
         let names;
@@ -235,6 +235,7 @@
           }
           alert('A consulta foi salva para envio mais tarde');
           document.getElementById('form').reset();
+          riscos = [];
         }
       }
     </script>
