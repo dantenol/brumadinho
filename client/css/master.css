@@ -229,7 +229,7 @@ select:focus ~ .bar:after {
   text-align: center;
   border-bottom: 1px solid #5b5b5b;
   padding: 8px;
-  white-space: nowrap;
+  white-space: initial;
 }
 
 header a {
@@ -255,4 +255,21 @@ header button {
 
 #risks .row {
   margin-bottom: 16px;
+}
+
+#attendance #table td:last-child input {
+  height: 30px;
+  width: 30px;
+}
+
+#attendance #table td:first-child {
+  text-align: left;
+}
+
+#attendance #table td {
+  width: calc(50vw - 12px);
+}
+
+#attendance #table {
+  table-layout: fixed
 }

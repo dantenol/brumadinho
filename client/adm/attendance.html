@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/master.css" />
+    <title>Presenças</title>
+  </head>
+  <body id="attendance">
+    <header>
+      <a href="https://localhost/adm/home.html">&#8592;</a>
+      <img
+        src="https://naacao.com.br/wp-content/uploads/2018/03/NAACAO.png"
+        alt=""
+      />
+    </header>
+    <main>
+      <div class="filters">
+        <div class="group">
+          <input
+            type="date"
+            id="date"
+            autocomplete="off"
+            onchange="date()"
+            required
+          />
+          <span class="highlight"></span> <span class="bar"></span>
+          <label>Data</label>
+        </div>
+        <div class="group">
+          <input
+            type="text"
+            id="patient"
+            onkeyup="filter('patient', 0)"
+            autocomplete="off"
+            required
+          />
+          <span class="highlight"></span> <span class="bar"></span>
+          <label>Nome</label>
+        </div>
+        <button id="filter" onclick="filterAttendance()">
+          Filtrar presentes
+        </button>
+      </div>
+      <div class="result">
+        <table id="table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Presença</th>
+            </tr>
+          </thead>
+          <tbody id="resultLine"></tbody>
+        </table>
+      </div>
+    </main>
+    <script type="text/javascript">
+      let arr = [];
+      let filtro = false;
+      document.addEventListener('DOMContentLoaded', async () => {
+        try {
+          let docs = await fetch(`https://${location.hostname}/api/doctors`, {
+            method: 'GET',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          });
+          let dm = await fetch(
+            `https://${location.hostname}/api/dreammakers?access_token=${
+              localStorage.access_token
+            }`,
+            {
+              method: 'GET',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+          docs = await docs.json();
+          dm = await dm.json();
+          docs.map(n =>
+            arr.push({
+              nome: n.name,
+              presenca: n.presenca,
+              id: n.id,
+              type: 'doctors',
+            })
+          );
+          dm.map(n =>
+            arr.push({
+              nome: n.nome,
+              presenca: n.presenca,
+              id: n.id,
+              type: 'dreammakers',
+            })
+          );
+        } catch (e) {
+          console.log(e);
+        }
+        for (var i = 0; i < arr.length; i++) {
+          var tableRef = document.getElementById('resultLine');
+          tableRef.style.display = 'none';
+          var newRow = tableRef.insertRow(tableRef.rows.length);
+          newRow
+            .insertCell(0)
+            .appendChild(document.createTextNode(arr[i].nome));
+          var x = document.createElement('INPUT');
+          x.setAttribute('type', 'checkbox');
+          x.setAttribute('id', arr[i].id);
+          x.setAttribute('onclick', `presenca(${i})`);
+          newRow.insertCell(1).appendChild(x);
+        }
+      });
+
+      function filterAttendance() {
+        if (filtro) {
+          date();
+          filtro = false;
+          document.getElementById('filter').innerHTML = 'Filtrar presentes';
+        } else {
+          date(true);
+          document.getElementById('filter').innerHTML = 'Mostrar todos';
+          filtro = true;
+        }
+      }
+
+      async function presenca(i) {
+        console.log(arr[i]);
+        const {type, id} = arr[i];
+        let d = document.getElementById('date').value;
+        let f = /(\d{4})-(\d{2})-(\d{2})/g.exec(d);
+        d = f[3] + '/' + f[2] + '/' + f[1];
+        const presenca = arr[i].presenca;
+        let idx = -1;
+        if (arr[i].presenca) {
+          idx = arr[i].presenca.indexOf(d);
+        } else {
+          arr[i].presenca = [];
+        }
+        if (idx > -1) {
+          arr[i].presenca.splice(idx, 1);
+        } else {
+          arr[i].presenca.push(d);
+        }
+        try {
+          let doc = await fetch(
+            `https://${location.hostname}/api/${type}/${id}?access_token=${
+              localStorage.access_token
+            }`,
+            {
+              method: 'PATCH',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({presenca}),
+            }
+          );
+          doc = doc.json();
+        } catch (e) {
+          console.log(e);
+          const input = document.getElementById(arr[i].id);
+          input.checked = !input.checked;
+        }
+      }
+
+      function date(filter) {
+        document.getElementById('resultLine').style.display = '';
+        let d = document.getElementById('date').value;
+        let f = /(\d{4})-(\d{2})-(\d{2})/g.exec(d);
+        d = f[3] + '/' + f[2] + '/' + f[1];
+        console.log(d);
+        // Declare variables
+        const table = document.querySelector('#table');
+        const tr = table.getElementsByTagName('tr');
+        for (i = 0; i < tr.length - 1; i++) {
+          let input = tr[i + 1].getElementsByTagName('td')[1];
+          input = input.getElementsByTagName('input')[0];
+          if (input) {
+            if (arr[i].presenca && arr[i].presenca.indexOf(d) > -1) {
+              console.log(i);
+              input.checked = true;
+            } else if (filter) {
+              tr[i + 1].style.display = 'none';
+            } else {
+              input.checked = false;
+              tr[i + 1].style.display = '';
+            }
+          }
+        }
+      }
+
+      function filter(type, idx) {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById(type);
+        console.log(input.value);
+        filter = input.value.toUpperCase();
+        table = document.querySelector('#table');
+        tr = table.getElementsByTagName('tr');
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName('td')[idx];
+          if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = '';
+            } else {
+              tr[i].style.display = 'none';
+            }
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
