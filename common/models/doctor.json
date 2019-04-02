@@ -21,6 +21,12 @@
     "createdAt": {
       "type": "date",
       "required": true
+    },
+    "presenca": {
+      "type": [
+        "string"
+      ],
+      "default": []
     }
   },
   "validations": [],
@@ -59,6 +65,13 @@
       "principalId": "$authenticated",
       "permission": "ALLOW",
       "property": "create"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "patchAttributes"
     },
     {
       "accessType": "*",

@@ -16,8 +16,9 @@
     },
     "presenca": {
       "type": [
-        "date"
-      ]
+        "string"
+      ],
+      "default": []
     },
     "email": {
       "type": "string",
