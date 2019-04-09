@@ -6,10 +6,6 @@
     "validateUpsert": true
   },
   "properties": {
-    "patientName": {
-      "type": "string",
-      "required": true
-    },
     "date": {
       "type": "date",
       "required": true
@@ -24,10 +20,6 @@
       "type": "string",
       "required": true
     },
-    "address": {
-      "type": "string",
-      "required": true
-    },
     "comments": {
       "type": "string",
       "required": false,
@@ -39,6 +31,11 @@
     "doctor": {
       "type": "belongsTo",
       "model": "doctor",
+      "foreignKey": ""
+    },
+    "patient": {
+      "type": "belongsTo",
+      "model": "patient",
       "foreignKey": ""
     }
   },

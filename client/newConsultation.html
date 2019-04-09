@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro de consulta</title>
+    <link rel="stylesheet" href="css/master.css" />
+    <link rel="icon" href="/img/favicon.ico" />
+  </head>
+  <body>
+    <header>
+      <a href="/">&#8592;</a> <img src="img/NAACAO.png" alt="" />
+    </header>
+    <main>
+      <form id="form">
+        <div class="group">
+          <input type="text" id="name" autocomplete="off" disabled />
+          <span class="highlight"></span> <span class="bar"></span>
+          <!-- <label>Nome do paciente</label> -->
+        </div>
+        <div class="group">
+          <input type="date" id="date" required />
+          <span class="highlight"></span> <span class="bar"></span>
+          <label>Data</label>
+        </div>
+        <div id="risks">
+          <div class="row">
+            <div class="half">
+              <input type="checkbox" onchange="risk('contatoComLama')" /> Teve
+              contato direto com a lama
+            </div>
+            <div class="half">
+              <input type="checkbox" onchange="risk('ideiaSuicida')" /> Ideação
+              suicída
+            </div>
+          </div>
+          <div class="row">
+            <div class="half">
+              <input type="checkbox" onchange="risk('tentativaSuicida')" />
+              Tentativa de suicídio
+            </div>
+            <div class="half">
+              <input type="checkbox" onchange="risk('amigoFamiliarMorto')" />
+              Algum familiar ou amigo morto/desaparecido
+            </div>
+          </div>
+          <div class="row">
+            <div class="half">
+              <input type="checkbox" onchange="risk('testemunhouAcidente')" />
+              Testemunhou o acidente
+            </div>
+            <div class="half">
+              <input type="checkbox" onchange="risk('perdaPropriedade')" />
+              Perda de propriedade
+            </div>
+          </div>
+          <div class="row">
+            <div class="half">
+              <input type="checkbox" onchange="risk('perdaLaboral')" /> Perda
+              laboral
+            </div>
+            <div class="half">
+              <input type="checkbox" onchange="risk('alcoolDroga')" /> Problemas
+              com álcool/drogas
+            </div>
+          </div>
+          <div class="row">
+            <div class="half">
+              <input type="checkbox" onchange="risk('luto')" /> Luto complicado
+            </div>
+            <div class="half">
+              <input type="checkbox" onchange="risk('violenciaDomestica')" />
+              Violência doméstica
+            </div>
+          </div>
+          <div class="row">
+            <div class="half">
+              <input type="checkbox" onchange="risk('abusoInfantil')" /> Abuso
+              infantil ou mau-trato
+            </div>
+          </div>
+        </div>
+        <div class="group">
+          <textarea
+            id="comments"
+            autocomplete="off"
+            required
+            rows="3"
+          ></textarea>
+          <span class="highlight"></span> <span class="bar"></span>
+          <label>Observações</label>
+        </div>
+        <div class="group">
+          <select id="doctor">
+            <option disabled selected></option>
+          </select>
+          <span class="highlight"></span> <span class="bar"></span>
+          <label>Profissional</label>
+        </div>
+        <div class="group">
+          <select id="doctor2">
+            <option selected></option>
+          </select>
+          <span class="highlight"></span> <span class="bar"></span>
+          <label>Segundo profissional</label>
+        </div>
+      </form>
+      <button id="submit">enviar</button>
+    </main>
+    <script type="text/javascript">
+      let riscos = [];
+      let name, id;
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        name = urlParams.get('nome');
+        id = urlParams.get('id');
+        document.getElementById('name').value = name;
+        let names;
+        let arr = [];
+        try {
+          names = await fetch(`https://${location.hostname}/api/doctors`, {
+            method: 'GET',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          });
+          names = await names.json();
+          names.map(n => arr.push({name: n.name}));
+          localStorage.setItem('doctors', JSON.stringify(arr));
+        } catch (e) {
+          document.getElementById('upload').style.display = 'none';
+          names = JSON.parse(localStorage.doctors);
+        }
+        const list = document.getElementById('doctor');
+        const list2 = document.getElementById('doctor2');
+        for (var i = 0; i < names.length; i++) {
+          var option = document.createElement('option');
+          var option2 = document.createElement('option');
+          option.value = names[i].name;
+          option.text = names[i].name;
+          option2.value = names[i].name;
+          option2.text = names[i].name;
+          list.appendChild(option);
+          list2.appendChild(option2);
+        }
+        console.log(names);
+      });
+
+      document.getElementById('submit').addEventListener('click', save, false);
+
+      function risk(prop) {
+        const idx = riscos.indexOf(prop);
+        if (idx > -1) {
+          riscos.splice(idx, 1);
+        } else {
+          riscos.push(prop);
+        }
+      }
+
+      function save() {
+        const data = {
+          patientId: id,
+          date: new Date(document.getElementById('date').value),
+          comments: document.getElementById('comments').value,
+          doctorName: document.getElementById('doctor').value,
+          doctor2Name: document.getElementById('doctor2').value,
+          riscos,
+        };
+        if (!data.date || !data.doctorName)
+          return alert('Você precisa preencher alguns campos!');
+        const sure = confirm('Tem certeza que quer salvar esse atendimento?');
+        if (!sure) return null;
+        else {
+          if (localStorage.toSend) {
+            const newArr = JSON.parse(localStorage.toSend);
+            newArr.push(data);
+            localStorage.setItem('toSend', JSON.stringify(newArr));
+          } else {
+            localStorage.setItem('toSend', JSON.stringify([data]));
+          }
+          alert('A consulta foi salva para envio mais tarde');
+          location.href = '/';
+        }
+      }
+    </script>
+  </body>
+</html>

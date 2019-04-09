@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Novo paciente</title>
+    <link rel="stylesheet" href="css/master.css" />
+    <link rel="icon" href="/img/favicon.ico" />
+  </head>
+  <body>
+    <header>
+      <!--
+        <a href="#" onclick="upload()" id="upload">
+          <img src="img/reload.png" />
+        </a>
+      -->
+      <a href="/">&#8592;</a>
+      <img src="img/NAACAO.png" alt="" />
+    </header>
+    <main>
+      <form id="form">
+        <div class="group">
+          <input type="text" id="name" autocomplete="off" required />
+          <span class="highlight"></span> <span class="bar"></span>
+          <label>Nome do paciente</label>
+        </div>
+        <div class="group">
+          <input id="address" required /> <span class="highlight"></span>
+          <span class="bar"></span> <label>Endereço</label>
+        </div>
+        <div class="group">
+          <input type="text" id="phone" autocomplete="off" required />
+          <span class="highlight"></span> <span class="bar"></span>
+          <label>Telefone</label>
+        </div>
+        <div class="group">
+          <input type="number" id="age" autocomplete="off" required />
+          <span class="highlight"></span> <span class="bar"></span>
+          <label>Idade</label>
+        </div>
+        <div class="group">
+          <select id="estadoCivil">
+            <option disabled selected></option>
+            <option value="solteiro">Solteiro(a)</option>
+            <option value="casado">Casado(a)</option>
+            <option value="viuvo">Viúvo(a)</option>
+            <option value="uniaoEstavel">União estável</option>
+          </select>
+          <span class="highlight"></span> <span class="bar"></span>
+          <label>Estado civil</label>
+        </div>
+      </form>
+      <button id="submit">enviar</button>
+    </main>
+    <script type="text/javascript">
+      document.getElementById('submit').addEventListener('click', save, false);
+
+      async function save() {
+        const data = {
+          nome: document.getElementById('name').value,
+          endereco: document.getElementById('address').value,
+          contato: document.getElementById('phone').value,
+          idade: document.getElementById('age').value,
+          estadoCivil: document.getElementById('estadoCivil').value,
+        };
+        if (!data.nome || !data.endereco)
+          return alert('Você precisa preencher alguns campos!');
+        const sure = confirm('Tem certeza que quer cadsatrar esse paciente?');
+        if (!sure) return null;
+        else {
+          try {
+            const rawResponse = await fetch(
+              `https://${location.hostname}/api/patients`,
+              {
+                method: 'POST',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+              }
+            );
+            const content = await rawResponse.json();
+            console.log(content);
+            if (content.error) {
+              throw 'Erro no registro de ' + data.nome;
+            } else {
+              alert('Paciente cadastrado com sucesso!');
+              location.href = `/newConsultation.html?nome=${content.nome}&id=${
+                content.id
+              }`
+            }
+          } catch (e) {
+            alert(e);
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

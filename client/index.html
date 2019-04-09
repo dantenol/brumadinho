@@ -1,125 +1,37 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="pt" dir="ltr">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registro de consulta</title>
+    <title>Selecione o paciente</title>
     <link rel="stylesheet" href="css/master.css" />
-    <link rel="icon" href="/img/favicon.ico">
+    <link rel="icon" href="/img/favicon.ico" />
   </head>
   <body>
     <header>
       <a href="#" onclick="upload()" id="upload">
         <img src="img/reload.png" />
       </a>
-      <img
-        src="img/NAACAO.png"
-        alt=""
-      />
+      <img src="img/NAACAO.png" alt="" />
     </header>
     <main>
-      <form id="form">
-        <div class="group">
-          <input type="text" id="name" autocomplete="off" required />
-          <span class="highlight"></span> <span class="bar"></span>
-          <label>Nome do paciente</label>
-        </div>
-        <div class="group">
-          <input type="date" id="date" required />
-          <span class="highlight"></span> <span class="bar"></span>
-          <label>Data</label>
-        </div>
-        <div class="group">
-          <input type="text" id="address" autocomplete="off" required />
-          <span class="highlight"></span> <span class="bar"></span>
-          <label>Endereço</label>
-        </div>
-        <div id="risks">
-          <div class="row">
-            <div class="half">
-              <input type="checkbox" onchange="risk('contatoComLama')" /> Teve
-              contato direto com a lama
-            </div>
-            <div class="half">
-              <input type="checkbox" onchange="risk('ideiaSuicida')" /> Ideação
-              suicída
-            </div>
-          </div>
-          <div class="row">
-            <div class="half">
-              <input type="checkbox" onchange="risk('tentativaSuicida')" />
-              Tentativa de suicídio
-            </div>
-            <div class="half">
-              <input type="checkbox" onchange="risk('amigoFamiliarMorto')" />
-              Algum familiar ou amigo morto/desaparecido
-            </div>
-          </div>
-          <div class="row">
-            <div class="half">
-              <input type="checkbox" onchange="risk('testemunhouAcidente')" />
-              Testemunhou o acidente
-            </div>
-            <div class="half">
-              <input type="checkbox" onchange="risk('perdaPropriedade')" />
-              Perda de propriedade
-            </div>
-          </div>
-          <div class="row">
-            <div class="half">
-              <input type="checkbox" onchange="risk('perdaLaboral')" /> Perda
-              laboral
-            </div>
-            <div class="half">
-              <input type="checkbox" onchange="risk('alcoolDroga')" /> Problemas
-              com álcool/drogas
-            </div>
-          </div>
-          <div class="row">
-            <div class="half">
-              <input type="checkbox" onchange="risk('luto')" /> Luto complicado
-            </div>
-            <div class="half">
-              <input type="checkbox" onchange="risk('violenciaDomestica')" />
-              Violência doméstica
-            </div>
-          </div>
-          <div class="row">
-            <div class="half">
-              <input type="checkbox" onchange="risk('abusoInfantil')" /> Abuso
-              infantil ou mau-trato
-            </div>
-          </div>
-        </div>
-        <div class="group">
-          <textarea
-            id="comments"
-            autocomplete="off"
-            required
-            rows="3"
-          ></textarea>
-          <span class="highlight"></span> <span class="bar"></span>
-          <label>Observações</label>
-        </div>
-        <div class="group">
-          <select id="doctor">
-            <option disabled selected></option>
-          </select>
-          <span class="highlight"></span> <span class="bar"></span>
-          <label>Profissional</label>
-        </div>
-        <div class="group">
-          <select id="doctor2">
-            <option disabled selected></option>
-          </select>
-          <span class="highlight"></span> <span class="bar"></span>
-          <label>Segundo profissional</label>
-        </div>
-      </form>
-      <button id="submit">enviar</button>
+      <div class="group">
+        <input
+          type="text"
+          id="name"
+          autocomplete="off"
+          onkeyup="search()"
+          required
+        />
+        <span class="highlight"></span> <span class="bar"></span>
+        <label>Pesquisar</label>
+      </div>
+      <div id="patientList">
+        <a href="newPatient.html" class="new">NOVO PACIENTE</a>
+      </div>
     </main>
     <script type="text/javascript">
-      let riscos = [];
+      const patients = {};
 
       document.addEventListener('DOMContentLoaded', async () => {
         let names;
@@ -128,44 +40,53 @@
           document.getElementById('upload').style.display = 'none';
         }
         try {
-          names = await fetch(`https://${location.hostname}/api/doctors`, {
-            method: 'GET',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-          });
+          names = await fetch(
+            `https://${
+              location.hostname
+            }/api/patients?filter[fields][id]=true&filter[fields][nome]=true&access_token=${
+              localStorage.access_token
+            }`,
+            {
+              method: 'GET',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+            }
+          );
           names = await names.json();
-          names.map(n => arr.push({name: n.name}));
-          localStorage.setItem('doctors', JSON.stringify(arr));
+          names.map(n => arr.push({name: n.nome, id: n.id}));
+          localStorage.setItem('patients', JSON.stringify(arr));
         } catch (e) {
           document.getElementById('upload').style.display = 'none';
-          names = JSON.parse(localStorage.doctors);
+          names = JSON.parse(localStorage.patients);
         }
-        const list = document.getElementById('doctor');
-        const list2 = document.getElementById('doctor2');
+        const list = document.getElementById('patientList');
         for (var i = 0; i < names.length; i++) {
-          var option = document.createElement('option');
-          var option2 = document.createElement('option');
-          option.value = names[i].name;
-          option.text = names[i].name;
-          option2.value = names[i].name;
-          option2.text = names[i].name;
-          list.appendChild(option);
-          list2.appendChild(option2);
+          const pat = document.createElement('a');
+          const linkText = document.createTextNode(names[i].nome);
+          pat.appendChild(linkText);
+          pat.value = names[i].name;
+          pat.href = `/newConsultation.html?nome=${names[i].nome}&id=${
+            names[i].id
+          }`;
+          list.appendChild(pat);
         }
         console.log(names);
       });
 
-      document.getElementById('submit').addEventListener('click', save, false);
-
-      function risk(prop) {
-        const idx = riscos.indexOf(prop)
-        if (idx > -1) {
-          riscos.splice(idx,1)
-        } else {
-          riscos.push(prop);
+      function search() {
+        const val = document.getElementById('name').value.toUpperCase();
+        const list = document.getElementsByTagName('a');
+        console.log(list);
+        for (i = 0; i < list.length; i++) {
+          if (list[i].innerText.toUpperCase().indexOf(val) > -1) {
+            list[i].style.display = '';
+          } else {
+            list[i].style.display = 'none';
+          }
         }
+
       }
 
       function upload() {
@@ -174,7 +95,9 @@
           data.map(async (r, i) => {
             try {
               const rawResponse = await fetch(
-                `https://${location.hostname}/api/consultations`,
+                `https://${location.hostname}/api/patients/${
+                  r.patientId
+                }/consultations`,
                 {
                   method: 'POST',
                   headers: {
@@ -204,39 +127,6 @@
             localStorage.removeItem('toSend');
           }
         });
-      }
-
-      async function save() {
-        const data = {
-          patientName: document.getElementById('name').value,
-          date: new Date(document.getElementById('date').value),
-          address: document.getElementById('address').value,
-          comments: document.getElementById('comments').value,
-          doctorName: document.getElementById('doctor').value,
-          doctor2Name: document.getElementById('doctor2').value,
-          riscos,
-        };
-        if (
-          !data.patientName ||
-          !data.date ||
-          !data.address ||
-          !data.doctorName
-        )
-          return alert('Você precisa preencher alguns campos!');
-        const sure = confirm('Tem certeza que quer salvar esse atendimento?');
-        if (!sure) return null;
-        else {
-          if (localStorage.toSend) {
-            const newArr = JSON.parse(localStorage.toSend);
-            newArr.push(data);
-            localStorage.setItem('toSend', JSON.stringify(newArr));
-          } else {
-            localStorage.setItem('toSend', JSON.stringify([data]));
-          }
-          alert('A consulta foi salva para envio mais tarde');
-          document.getElementById('form').reset();
-          riscos = [];
-        }
       }
     </script>
     <script>

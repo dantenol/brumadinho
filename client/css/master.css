@@ -244,6 +244,11 @@ header a {
   height: 30px;
 }
 
+#upload {
+  right: 0;
+  left: auto;
+}
+
 header button {
   position: absolute;
   font-size: 34px;
@@ -272,4 +277,11 @@ header button {
 
 #attendance #table {
   table-layout: fixed
+}
+
+#patientList a {
+  display: block;
+  text-align: center;
+  font-size: 24px;
+  padding: 16px;
 }
