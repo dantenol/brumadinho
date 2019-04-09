@@ -43,9 +43,7 @@
           names = await fetch(
             `https://${
               location.hostname
-            }/api/patients?filter[fields][id]=true&filter[fields][nome]=true&access_token=${
-              localStorage.access_token
-            }`,
+            }/api/patients?filter[fields][id]=true&filter[fields][nome]=true]`,
             {
               method: 'GET',
               headers: {
