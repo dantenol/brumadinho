@@ -43,7 +43,7 @@
           names = await fetch(
             `https://${
               location.hostname
-            }/api/patients?filter[fields][id]=true&filter[fields][nome]=true]`,
+            }/api/patients?filter[fields][id]=true&filter[fields][nome]=true&filter[order]=nome ASC`,
             {
               method: 'GET',
               headers: {
