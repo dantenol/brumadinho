@@ -2,6 +2,8 @@ const cacheName = 'cache-v1';
 const precacheResources = [
   '/',
   'index.html',
+  'newPatient.html',
+  'newConsultation.html',
   'css/master.css',
   'img/reload.png',
   'img/NAACAO.png',
