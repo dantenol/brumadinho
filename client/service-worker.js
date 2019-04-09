@@ -34,7 +34,7 @@ self.addEventListener('fetch', event => {
         return fetch(event.request);
       })
     );
-    evt.waitUntil(update(evt.request));
+    event.waitUntil(update(event.request));
 });
 
 function update(request) {
