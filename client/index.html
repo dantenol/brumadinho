@@ -76,8 +76,7 @@
       function search() {
         const val = document.getElementById('name').value.toUpperCase();
         const list = document.getElementsByTagName('a');
-        console.log(list);
-        for (i = 0; i < list.length; i++) {
+        for (i = 2; i < list.length; i++) {
           if (list[i].innerText.toUpperCase().indexOf(val) > -1) {
             list[i].style.display = '';
           } else {
