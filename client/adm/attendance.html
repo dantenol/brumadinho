@@ -30,8 +30,8 @@
         <div class="group">
           <input
             type="text"
-            id="patient"
-            onkeyup="filter('patient', 0)"
+            id="doctor"
+            onkeyup="filter('doctor', 0)"
             autocomplete="off"
             required
           />
@@ -53,9 +53,12 @@
           <tbody id="resultLine"></tbody>
         </table>
       </div>
+      <button id="submit" onclick="save()">SALVAR</button>
     </main>
     <script type="text/javascript">
       let arr = [];
+      let newAtt = [];
+      let att = []
       let filtro = false;
       document.addEventListener('DOMContentLoaded', async () => {
         try {
@@ -78,6 +81,19 @@
               },
             }
           );
+          // let att = await fetch(
+          //   `https://${location.hostname}/api/attendance?access_token=${
+          //     localStorage.access_token
+          //   }`,
+          //   {
+          //     method: 'GET',
+          //     headers: {
+          //       Accept: 'application/json',
+          //       'Content-Type': 'application/json',
+          //     },
+          //   }
+          // );
+          // att = await docs.json();
           docs = await docs.json();
           dm = await dm.json();
           docs.map(n =>
@@ -109,85 +125,105 @@
           var x = document.createElement('INPUT');
           x.setAttribute('type', 'checkbox');
           x.setAttribute('id', arr[i].id);
-          x.setAttribute('onclick', `presenca(${i})`);
+          x.setAttribute('onclick', `presenca('${arr[i].id}')`);
           newRow.insertCell(1).appendChild(x);
         }
       });
 
       function filterAttendance() {
         if (filtro) {
-          date();
           filtro = false;
           document.getElementById('filter').innerHTML = 'Filtrar presentes';
+          tr = document.querySelector('#table').getElementsByTagName('tr');
+          for (i = 0; i < tr.length; i++) {
+            tr[i].style.display = '';
+          }
         } else {
-          date(true);
           document.getElementById('filter').innerHTML = 'Mostrar todos';
           filtro = true;
+          table = document.querySelector('#table');
+          tr = table.getElementsByTagName('tr');
+
+          // Loop through all table rows, and hide those who don't match the search query
+          for (i = 1; i < tr.length; i++) {
+            const ch = tr[i].getElementsByTagName('input')[0];
+            if (ch.checked) {
+              tr[i].style.display = '';
+            } else {
+              tr[i].style.display = 'none';
+            }
+          }
         }
       }
 
-      async function presenca(i) {
-        console.log(arr[i]);
-        const {type, id} = arr[i];
-        let d = document.getElementById('date').value;
-        let f = /(\d{4})-(\d{2})-(\d{2})/g.exec(d);
-        d = f[3] + '/' + f[2] + '/' + f[1];
-        const presenca = arr[i].presenca;
-        let idx = -1;
-        if (arr[i].presenca) {
-          idx = arr[i].presenca.indexOf(d);
-        } else {
-          arr[i].presenca = [];
-        }
+      function presenca(i) {
+        const idx = newAtt.indexOf(i);
         if (idx > -1) {
-          arr[i].presenca.splice(idx, 1);
+          newAtt.splice(idx, 1);
         } else {
-          arr[i].presenca.push(d);
+          newAtt.push(i);
         }
+      }
+
+      async function date() {
         try {
-          let doc = await fetch(
-            `https://${location.hostname}/api/${type}/${id}?access_token=${
-              localStorage.access_token
-            }`,
+          const dayAttendance = await fetch(
+            `https://${location.hostname}/api/attendances?filter[where][date]=${
+              document.getElementById('date').value
+            }&access_token=${localStorage.access_token}`,
             {
-              method: 'PATCH',
+              method: 'GET',
               headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({presenca}),
             }
           );
-          doc = doc.json();
+          let res = await dayAttendance.json();
+          res = res[0];
+          const tableRef = document.getElementById('resultLine');
+          tableRef.style.display = '';
+          const checks = tableRef.getElementsByTagName('input');
+          if (!res) {
+            alert('Ainda não há lista de presença para esse dia.');
+          } else {
+            for (var i = 0; i < checks.length; i++) {
+              checks[i].disabled = true;
+              if (res.volunteers.indexOf(checks[i].id) >= 0) {
+                checks[i].checked = true;
+              }
+            }
+          }
+          document.getElementById('date').setAttribute('disabled', true);
         } catch (e) {
           console.log(e);
-          const input = document.getElementById(arr[i].id);
-          input.checked = !input.checked;
         }
       }
 
-      function date(filter) {
-        document.getElementById('resultLine').style.display = '';
-        let d = document.getElementById('date').value;
-        let f = /(\d{4})-(\d{2})-(\d{2})/g.exec(d);
-        d = f[3] + '/' + f[2] + '/' + f[1];
-        console.log(d);
-        // Declare variables
-        const table = document.querySelector('#table');
-        const tr = table.getElementsByTagName('tr');
-        for (i = 0; i < tr.length - 1; i++) {
-          let input = tr[i + 1].getElementsByTagName('td')[1];
-          input = input.getElementsByTagName('input')[0];
-          if (input) {
-            if (arr[i].presenca && arr[i].presenca.indexOf(d) > -1) {
-              console.log(i);
-              input.checked = true;
-            } else if (filter) {
-              tr[i + 1].style.display = 'none';
-            } else {
-              input.checked = false;
-              tr[i + 1].style.display = '';
+
+      async function save() {
+        if (confirm('Tem certeza que quer finalizar a lista de presença desse dia?')) {
+          try {
+            const data = {
+              date: new Date(document.getElementById('date').value),
+              volunteers: newAtt,
             }
+            const req = await fetch(
+            `https://${location.hostname}/api/attendances?access_token=${localStorage.access_token}`,
+            {
+              method: 'POST',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(data),
+            }
+          );
+          alert('Presença do dia salva com sucesso!');
+          location.href = '/adm';
+          } catch (e) {
+            console.log(e);
+            alert('Algo deu errado.\n\n' + JSON.stringify(e))
           }
         }
       }

@@ -21,12 +21,6 @@
     "createdAt": {
       "type": "date",
       "required": true
-    },
-    "presenca": {
-      "type": [
-        "string"
-      ],
-      "default": []
     }
   },
   "validations": [],

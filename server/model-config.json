@@ -55,5 +55,9 @@
   "patient": {
     "dataSource": "mongodb",
     "public": true
+  },
+  "attendance": {
+    "dataSource": "mongodb",
+    "public": true
   }
 }
