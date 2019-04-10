@@ -52,7 +52,17 @@
       </div>
     </main>
     <script type="text/javascript">
+      function passwordCheck() {
+        var password = prompt('Digite a senha.');
+        if (password === 'RvF4Z8') {
+          return;
+        } else {
+          window.location = '/adm';
+        }
+      }
       document.addEventListener('DOMContentLoaded', async () => {
+        window.onload = passwordCheck;
+
         let names = await fetch(`https://${location.hostname}/api/doctors`, {
           method: 'GET',
           headers: {
@@ -61,7 +71,9 @@
           },
         });
         let consultations = await fetch(
-          `https://${location.hostname}/api/consultations?filter={"include":"patient"}&access_token=` +
+          `https://${
+            location.hostname
+          }/api/consultations?filter={"include":"patient"}&access_token=` +
             localStorage.access_token,
           {
             method: 'GET',
@@ -85,11 +97,15 @@
           var newRow = tableRef.insertRow(tableRef.rows.length);
           var name = newRow.insertCell(0);
           name.appendChild(
-            document.createTextNode(consultations[i].patientName || consultations[i].patient.nome)
+            document.createTextNode(
+              consultations[i].patientName || consultations[i].patient.nome
+            )
           );
           var address = newRow.insertCell(1);
           address.appendChild(
-            document.createTextNode(consultations[i].address || consultations[i].patient.endereco)
+            document.createTextNode(
+              consultations[i].address || consultations[i].patient.endereco
+            )
           );
           var date = newRow.insertCell(2);
           const parsedDate = new Date(consultations[i].date);
