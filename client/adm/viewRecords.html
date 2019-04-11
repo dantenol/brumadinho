@@ -73,7 +73,7 @@
         let consultations = await fetch(
           `https://${
             location.hostname
-          }/api/consultations?filter={"include":"patient"}&access_token=` +
+          }/api/consultations?filter={"include":"patient", "order":"date ASC"}&access_token=` +
             localStorage.access_token,
           {
             method: 'GET',
