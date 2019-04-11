@@ -52,6 +52,7 @@
       </div>
     </main>
     <script type="text/javascript">
+      const cons = {};
       function passwordCheck() {
         var password = prompt('Digite a senha.');
         if (password === 'RvF4Z8') {
@@ -70,10 +71,10 @@
             'Content-Type': 'application/json',
           },
         });
-        let consultations = await fetch(
+        let patients = await fetch(
           `https://${
             location.hostname
-          }/api/consultations?filter={"include":"patient", "order":"date ASC"}&access_token=` +
+          }/api/patients?filter={"include":"consultations", "order":"nome ASC"}&access_token=` +
             localStorage.access_token,
           {
             method: 'GET',
@@ -83,52 +84,47 @@
             },
           }
         );
-        consultations = await consultations.json();
+        patients = await patients.json();
         names = await names.json();
         const list = document.getElementById('doctor');
+        let idx = 0;
         for (var i = 0; i < names.length; i++) {
           var option = document.createElement('option');
           option.value = names[i].name;
           option.text = names[i].name;
           list.appendChild(option);
         }
-        for (var i = 0; i < consultations.length; i++) {
-          var tableRef = document.getElementById('resultLine');
-          var newRow = tableRef.insertRow(tableRef.rows.length);
-          var name = newRow.insertCell(0);
-          name.appendChild(
-            document.createTextNode(
-              consultations[i].patientName || consultations[i].patient.nome
-            )
-          );
-          var address = newRow.insertCell(1);
-          address.appendChild(
-            document.createTextNode(
-              consultations[i].address || consultations[i].patient.endereco
-            )
-          );
-          var date = newRow.insertCell(2);
-          const parsedDate = new Date(consultations[i].date);
-          date.appendChild(
-            document.createTextNode(
-              parsedDate.getUTCDate() + '/' + (parsedDate.getUTCMonth() + 1)
-            )
-          );
-          var doctorName = newRow.insertCell(3);
-          doctorName.appendChild(
-            document.createTextNode(consultations[i].doctorName)
-          );
-          var doctor2Name = newRow.insertCell(4);
-          doctor2Name.appendChild(
-            document.createTextNode(consultations[i].doctor2Name || '')
-          );
-          var comments = newRow.insertCell(5);
-          comments.appendChild(
-            document.createTextNode(consultations[i].comments || '')
-          );
+        var tableRef = document.getElementById('resultLine');
+        for (var i = 0; i < patients.length; i++) {
+          console.log(patients[i].nome);
+          let txt = '<tr>';
+          let r;
+          if (!patients[i].consultations.length) {
+            continue;
+          }
+          txt +=
+            `<td rowspan="${patients[i].consultations.length}">` +
+              (patients[i].patientName || patients[i].nome) + '</td>';
+
+          txt +=
+            `<td rowspan="${patients[i].consultations.length}">` +
+              (patients[i].address || patients[i].endereco) + '</td>';
+          patients[i].consultations.map((c, i) => {
+            const parsedDate = new Date(c.date);
+            txt +=
+              '<td>' +
+              parsedDate.getUTCDate() +
+              '/' +
+              (parsedDate.getUTCMonth() + 1) +
+              '</td>';
+            txt += '<td>' + c.doctorName + '</td>';
+            txt += '<td>' + c.doctor2Name + '</td>';
+            txt += '<td>' + c.comments + '</td>';
+            txt += '</tr>';
+          });
+          console.log(txt);
+          tableRef.innerHTML += txt;
         }
-        console.log(names);
-        console.log(consultations);
       });
 
       function filter(type, idx) {
