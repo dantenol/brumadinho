@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/master.css" />
+    <title>Voluntário</title>
+  </head>
+  <body>
+    <header>
+      <a href="attendance.html">&#8592;</a>
+      <img
+        src="https://naacao.com.br/wp-content/uploads/2018/03/NAACAO.png"
+        alt=""
+      />
+    </header>
+    <main>
+      <div>
+        <h1 id="name">Nome:</h1>
+        <h2 id="role"></h2>
+        <h2 id="number"></h2>
+        <h2 id="contact"></h2>
+      </div>
+    </main>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const type = urlParams.get('type');
+        const id = urlParams.get('id');
+        try {
+          const net = await fetch(
+            `https://${location.hostname}/api/${type}/${id}?access_token=` +
+              localStorage.access_token,
+            {
+              method: 'GET',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+          const res = await net.json();
+          document.getElementById('name').innerHTML = res.nome || res.name;
+          let r;
+          if (res.type === "psycologist") {
+            r = "Psicólogo(a)"
+          } else if (res.type === "social assistant") {
+            r = "Assistente social"
+          } else {
+            r = "DreamMaker, " + res.profissao
+          }
+          document.getElementById('role').innerHTML = r;
+          document.getElementById('number').innerHTML = res.professionalNumber || '';
+          document.getElementById('contact').innerHTML = "Telefone: " + res.telefone || '';
+          console.log(res);
+        } catch (e) {
+          console.log(e);
+        }
+      });
+
+    </script>
+  </body>
+</html>
