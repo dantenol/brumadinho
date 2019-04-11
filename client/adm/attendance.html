@@ -99,7 +99,6 @@
           docs.map(n =>
             arr.push({
               nome: n.name,
-              presenca: n.presenca,
               id: n.id,
               type: 'doctors',
             })
@@ -107,7 +106,6 @@
           dm.map(n =>
             arr.push({
               nome: n.nome,
-              presenca: n.presenca,
               id: n.id,
               type: 'dreammakers',
             })
@@ -115,6 +113,7 @@
         } catch (e) {
           console.log(e);
         }
+        arr.sort((a, b) => (a.nome > b.nome) ? 1 : -1)
         for (var i = 0; i < arr.length; i++) {
           var tableRef = document.getElementById('resultLine');
           tableRef.style.display = 'none';
