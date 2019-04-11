@@ -115,14 +115,19 @@
         }
         arr.sort((a, b) => (a.nome > b.nome) ? 1 : -1)
         for (var i = 0; i < arr.length; i++) {
-          var tableRef = document.getElementById('resultLine');
-          tableRef.style.display = 'none';
-          var newRow = tableRef.insertRow(tableRef.rows.length);
+          const tableRef = document.getElementById('resultLine');
+          // tableRef.style.display = 'none';
+          const newRow = tableRef.insertRow(tableRef.rows.length);
+          const a = document.createElement('a');
+          const linkText = document.createTextNode(arr[i].nome);
+          a.appendChild(linkText);
+          a.href = `volunteer.html?type=${arr[i].type}&id=${arr[i].id}`;
           newRow
             .insertCell(0)
-            .appendChild(document.createTextNode(arr[i].nome));
-          var x = document.createElement('INPUT');
+            .appendChild(a);
+          const x = document.createElement('INPUT');
           x.setAttribute('type', 'checkbox');
+          x.disabled = true;
           x.setAttribute('id', arr[i].id);
           x.setAttribute('onclick', `presenca('${arr[i].id}')`);
           newRow.insertCell(1).appendChild(x);
@@ -184,6 +189,9 @@
           tableRef.style.display = '';
           const checks = tableRef.getElementsByTagName('input');
           if (!res) {
+            for (var i = 0; i < checks.length; i++) {
+              checks[i].disabled = false;
+            }
             alert('Ainda não há lista de presença para esse dia.');
           } else {
             for (var i = 0; i < checks.length; i++) {
