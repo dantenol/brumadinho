@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro de consulta</title>
+    <link rel="stylesheet" href="css/master.css" />
+    <link rel="icon" href="/img/favicon.ico" />
+  </head>
+  <body>
+    <header><a href="/">&#8592;</a> <img src="img/NAACAO.png" alt="" /></header>
+    <main>
+      <form id="form">
+        <div class="group">
+          <input type="text" id="name" autocomplete="off" required />
+          <span class="highlight"></span> <span class="bar"></span>
+          <!--<label>Nome do paciente</label>-->
+        </div>
+        <div class="group">
+          <input id="address" required /> <span class="highlight"></span>
+          <span class="bar"></span>
+          <!--<label>Endereço</label>-->
+        </div>
+        <div class="group">
+          <input type="text" id="phone" autocomplete="off" required />
+          <span class="highlight"></span> <span class="bar"></span>
+          <!--<label>Telefone</label> -->
+        </div>
+        <div class="group">
+          <input type="number" id="age" autocomplete="off" required />
+          <span class="highlight"></span> <span class="bar"></span>
+          <!-- <label>Idade</label> -->
+        </div>
+        <div class="group">
+          <select id="estadoCivil">
+            <option disabled selected></option>
+            <option id="solteiroOption" value="solteiro">Solteiro(a)</option>
+            <option id="casadoOption" value="casado">Casado(a)</option>
+            <option id="viuvoOption" value="viuvo">Viúvo(a)</option>
+            <option id="uniaoEstavelOption" value="uniaoEstavel"
+              >União estável</option
+            >
+          </select>
+          <span class="highlight"></span> <span class="bar"></span>
+          <label>Estado civil</label>
+        </div>
+      </form>
+      <button id="submit">enviar</button>
+    </main>
+    <script type="text/javascript">
+      document.getElementById("submit").addEventListener("click", save, false);
+      let id;
+      let name;
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        name = urlParams.get("nome");
+        id = urlParams.get("id");
+
+        console.log(name);
+        console.log(id);
+
+        const rawResponse = await fetch(
+          `https://${location.hostname}/api/patients/${id}`,
+          {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json"
+            }
+          }
+        );
+
+        const paciente = await rawResponse.json();
+        console.log(paciente);
+
+        if (paciente.error) {
+          throw "Paciente não encontrado!";
+        }
+
+        document.getElementById("name").value = paciente.nome;
+        document.getElementById("address").value = paciente.endereco;
+        document.getElementById("phone").value = paciente.contato;
+        document.getElementById("age").value = paciente.idade;
+        document.getElementById(`${paciente.estadoCivil}Option`).selected =
+          "selected";
+      });
+
+      // document.getElementById("submit").addEventListener("click", save, false);
+
+      function risk(prop) {
+        const idx = riscos.indexOf(prop);
+        if (idx > -1) {
+          riscos.splice(idx, 1);
+        } else {
+          riscos.push(prop);
+        }
+      }
+
+      async function save() {
+        const data = {
+          nome: document.getElementById("name").value,
+          endereco: document.getElementById("address").value,
+          contato: document.getElementById("phone").value,
+          idade: document.getElementById("age").value,
+          estadoCivil: document.getElementById("estadoCivil").value
+        };
+        if (!data.nome || !data.endereco)
+          return alert("Você precisa preencher alguns campos!");
+        const sure = confirm(
+          "Tem certeza que quer confirmar as alterações nesse paciente?"
+        );
+        if (!sure) return null;
+        else {
+          try {
+            const rawResponse = await fetch(
+              `https://${location.hostname}/api/patients/${id}`,
+              {
+                method: "PUT",
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+              }
+            );
+            const content = await rawResponse.json();
+            console.log(content);
+            if (content.error) {
+              throw "Erro ao editar " + data.nome;
+            } else {
+              alert("Paciente editado com sucesso!");
+              location.href = `/newConsultation.html?nome=${content.nome}&id=${
+                content.id
+              }`;
+            }
+          } catch (e) {
+            alert(e);
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
