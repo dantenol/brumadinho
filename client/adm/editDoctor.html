@@ -40,23 +40,26 @@
       <div class="group" id="Disponibilidade">
         <div class="row">
           <div class="half">
-            <input type="checkbox" onchange="disp('segunda')" />
+            <input id="segundaOption" type="checkbox" onchange="disp('segunda')"
+              />
             Segunda
           </div>
           <div class="half">
-            <input type="checkbox" onchange="disp('terca')" />
+            <input id="tercaOption" type="checkbox" onchange="disp('terca')" />
             Terça
           </div>
           <div class="half">
-            <input type="checkbox" onchange="disp('quarta')" />
+            <input id="quartaOption" type="checkbox" onchange="disp('quarta')"
+              />
             Quarta
           </div>
           <div class="half">
-            <input type="checkbox" onchange="disp('quinta')" />
+            <input id="quintaOption" type="checkbox" onchange="disp('quinta')"
+              />
             Quinta
           </div>
           <div class="half">
-            <input type="checkbox" onchange="disp('sexta')" />
+            <input id="sextaOption" type="checkbox" onchange="disp('sexta')" />
             Sexta
           </div>
         </div>
@@ -76,7 +79,49 @@
         document.getElementById('submit').addEventListener('click', send, false);
         
         let disponibilidade = []
-        
+        let doc, id;
+        document.addEventListener('DOMContentLoaded', async () => {
+          const urlParams = new URLSearchParams(window.location.search);
+          id = urlParams.get("id");
+          console.log(id);
+          const rawResponse = await fetch(`https://${location.hostname}/api/doctors/${id}?access_token=${ localStorage.access_token }`, {
+            method: 'GET',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          });
+
+          const doc = await rawResponse.json();
+        console.log(doc);
+
+        if(doc.error){
+          throw "Profissional não encontrado!"
+        }
+
+        const data = {
+            professionalNumber: doc.professionalNumber,
+            name: doc.name,
+            type: doc.type,
+            email: doc.email,
+            celular: doc.celular,
+            disponibilidade: doc.disponibilidade,
+          };
+          disponibilidade = doc.disponibilidade
+
+          console.log(doc)
+
+          document.getElementById('number').value = data.professionalNumber;
+          document.getElementById('name').value = data.name;
+          document.getElementById('type').value = data.type;
+          document.getElementById('email').value = data.email;
+          document.getElementById('celular').value = data.celular;
+          data.disponibilidade.map( opcao=>{
+            document.getElementById(`${opcao}Option`).checked = true;
+          })
+
+        })
+
         function disp(dia) {
             const idx = disponibilidade.indexOf(dia);
               if (idx > -1) {
@@ -96,21 +141,35 @@
             disponibilidade,
             createdAt: new Date(),
           };
-          const rawResponse = await fetch(`https://${location.hostname}/api/doctors?access_token=` +
-            localStorage.access_token, {
-            method: 'POST',
+          if (!data.name || data.disponibilidade.length == 0)
+          return alert("Você precisa preencher alguns campos!");
+        const sure = confirm(
+          "Tem certeza que quer confirmar as alterações nesse profissional?"
+        );
+        if (!sure) return null;
+
+        console.log('jsonstringfydata')
+        console.log(JSON.stringify(data))
+        console.log('access token' + localStorage.access_token);
+
+          const rawResponse = await fetch(`https://${location.hostname}/api/doctors/${id}?access_token=${localStorage.access_token}`,
+             {
+            method: 'PUT',
             headers: {
               Accept: 'application/json',
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
           });
+          
+
           const content = await rawResponse.json();
           console.log(content);
+          
           if (content.error) {
             alert(content.error.message);
           } else {
-            alert('Profissional adicionado com sucesso!');
+            alert('Profissional editado com sucesso!');
             location.href = "home.html";
           }
         }

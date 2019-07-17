@@ -12,7 +12,7 @@
       <img
         src="https://naacao.com.br/wp-content/uploads/2018/03/NAACAO.png"
         alt=""
-      />
+        />
     </header>
     <main>
       <div class="filters">
@@ -23,7 +23,7 @@
             autocomplete="off"
             onchange="date()"
             required
-          />
+            />
           <span class="highlight"></span> <span class="bar"></span>
           <label>Data</label>
         </div>
@@ -34,7 +34,7 @@
             onkeyup="filter('doctor', 0)"
             autocomplete="off"
             required
-          />
+            />
           <span class="highlight"></span> <span class="bar"></span>
           <label>Nome</label>
         </div>
@@ -47,6 +47,7 @@
           <thead>
             <tr>
               <th>Nome</th>
+              <th>Editar</th>
               <th>Presença</th>
             </tr>
           </thead>
@@ -96,6 +97,7 @@
           // att = await docs.json();
           docs = await docs.json();
           dm = await dm.json();
+        
           docs.map(n =>
             arr.push({
               nome: n.name,
@@ -103,6 +105,7 @@
               type: 'doctors',
             })
           );
+        
           dm.map(n =>
             arr.push({
               nome: n.nome,
@@ -113,25 +116,33 @@
         } catch (e) {
           console.log(e);
         }
-        arr.sort((a, b) => (a.nome > b.nome) ? 1 : -1)
-        for (var i = 0; i < arr.length; i++) {
+        
+        arr.sort((a, b) => a.nome > b.nome ? 1 : -1)
+
+        arr.map(({nome, id, type})=>{
           const tableRef = document.getElementById('resultLine');
           // tableRef.style.display = 'none';
           const newRow = tableRef.insertRow(tableRef.rows.length);
+          
           const a = document.createElement('a');
-          const linkText = document.createTextNode(arr[i].nome);
+          const linkText = document.createTextNode(nome);
           a.appendChild(linkText);
-          a.href = `volunteer.html?type=${arr[i].type}&id=${arr[i].id}`;
-          newRow
-            .insertCell(0)
-            .appendChild(a);
+          a.href = `volunteer.html?type=${type}&id=${id}`;
+          newRow.insertCell(0).appendChild(a);
+
+          const edit = document.createElement('a');
+          edit.appendChild(document.createTextNode('editar'));
+          edit.href = `editDoctor.html?id=${id}`;
+          newRow.insertCell(1).appendChild(edit);
+
           const x = document.createElement('INPUT');
           x.setAttribute('type', 'checkbox');
           x.disabled = true;
-          x.setAttribute('id', arr[i].id);
-          x.setAttribute('onclick', `presenca('${arr[i].id}')`);
-          newRow.insertCell(1).appendChild(x);
-        }
+          x.setAttribute('id', id);
+          x.setAttribute('onclick', `presenca('${id}')`);
+          newRow.insertCell(2).appendChild(x);
+        })
+
       });
 
       function filterAttendance() {

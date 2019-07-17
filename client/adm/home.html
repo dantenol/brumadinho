@@ -19,7 +19,13 @@
         <a id="create" href="newDoctor.html">
           <div class="box"><span>Adicionar novo profissional</span></div>
         </a>
-        <a id="create" href="newStaff.html">
+        <a
+          class="span3 offset2"
+          value="editar"
+          href="<a"
+          id="create"
+          href="newStaff.html"
+        >
           <div class="box"><span>Adicionar novo DreamMaker</span></div>
         </a>
         <a id="view" href="viewRecords.html">
@@ -31,22 +37,22 @@
       </div>
     </main>
     <script type="text/javascript">
-      document.addEventListener('DOMContentLoaded', async () => {
+      document.addEventListener("DOMContentLoaded", async () => {
         try {
           const net = await fetch(
             `https://${location.hostname}/api/dreammakers?access_token=` +
               localStorage.access_token,
             {
-              method: 'GET',
+              method: "GET",
               headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-              },
+                Accept: "application/json",
+                "Content-Type": "application/json"
+              }
             }
           );
           if (!net.ok) {
             localStorage.clear();
-            location.href = '/adm';
+            location.href = "/adm";
           }
           console.log(net.ok);
         } catch (e) {
@@ -55,7 +61,7 @@
       });
       function quit() {
         localStorage.clear();
-        location.href = 'index.html';
+        location.href = "index.html";
       }
     </script>
   </body>
