@@ -58,6 +58,7 @@
         <option value="empregado">empregado</option>
         <option value="empreende">empreende</option>
         <option value="desempregado">desempregado</option>
+        <option value="aposentado">aposentado</option>
       </select>
       <h3>Se é empregado(a), trabalha com o que?</h3>
       <input id="profissao" type="text" />
@@ -97,10 +98,10 @@
         <option value="pos">Pos-graduação, mestrado, doutorado</option>
         <option value="0">Não sabe ou não quer responder</option>
       </select>
-      <button id="submit" onclick="save()">salvar</button>
+      <button onclick="save()">salvar</button>
       <br>
       <br>
-      <button id="submit" onclick="send()">enviar todos para servidor</button>
+      <button onclick="send()">enviar todos para servidor</button>
     </main>
     <script type="text/javascript">
       const data = {};
