@@ -115,7 +115,7 @@ select:valid ~ label {
 }
 .bar:before,
 .bar:after {
-  content: '';
+  content: "";
   height: 2px;
   width: 0;
   bottom: 1px;
@@ -239,7 +239,7 @@ header a {
   left: 0px;
 }
 
-#upload img{
+#upload img {
   width: 30px;
   height: 30px;
 }
@@ -276,7 +276,7 @@ header button {
 }
 
 #attendance #table {
-  table-layout: fixed
+  table-layout: fixed;
 }
 
 #patientList a {
@@ -284,4 +284,26 @@ header button {
   text-align: center;
   font-size: 24px;
   padding: 16px;
+}
+
+.newPatient {
+  display: block;
+  text-align: center;
+  font-size: 24px;
+  padding: 16px;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 5fr 1fr;
+  grid-template-rows: repeat(-1, 50px);
+  grid-gap: 5px;
+}
+
+.header {
+  grid-column: 1/-1;
+}
+
+.listContent {
+  grid-template-columns: 5fr 1fr;
 }

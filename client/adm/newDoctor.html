@@ -26,6 +26,43 @@
         <label>Numero de registro</label>
       </div>
       <div class="group">
+        <input type="text" id="celular" autocomplete="off" required />
+        <span class="highlight"></span> <span class="bar"></span>
+        <label>Celular</label>
+      </div>
+
+      <div class="group">
+        <input type="text" id="email" autocomplete="off" required />
+        <span class="highlight"></span> <span class="bar"></span>
+        <label>Email</label>
+      </div>
+
+      <div class="group" id="Disponibilidade">
+        <div class="row">
+          <div class="half">
+            <input type="checkbox" onchange="disp('segunda')" /> 
+            Segunda
+          </div>
+          <div class="half">
+            <input type="checkbox" onchange="disp('terca')" /> 
+            Terça
+          </div>
+          <div class="half">
+            <input type="checkbox" onchange="disp('quarta')" />
+            Quarta
+          </div>
+          <div class="half">
+            <input type="checkbox" onchange="disp('quinta')" />
+            Quinta
+          </div>
+          <div class="half">
+            <input type="checkbox" onchange="disp('sexta')" />
+            Sexta
+          </div>
+        </div>
+      </div>
+
+      <div class="group">
         <select id="type">
           <option disabled selected></option>
           <option value="social assistant">Assistência social</option>
@@ -37,12 +74,26 @@
       <button id="submit">enviar</button>
       <script type="text/javascript">
         document.getElementById('submit').addEventListener('click', send, false);
+        
+        let disponibilidade = []
+        
+        function disp(dia) {
+            const idx = disponibilidade.indexOf(dia);
+              if (idx > -1) {
+                disponibilidade.splice(idx, 1);
+              } else {
+                disponibilidade.push(dia);
+              }
+            }
 
         async function send() {
           const data = {
             professionalNumber: document.getElementById('number').value,
             name: document.getElementById('name').value,
             type: document.getElementById('type').value,
+            email: document.getElementById('email').value,
+            celular: document.getElementById('celular').value,
+            disponibilidade,
             createdAt: new Date(),
           };
           const rawResponse = await fetch(`https://${location.hostname}/api/doctors?access_token=` +

@@ -1,144 +1,157 @@
 <!DOCTYPE html>
 <html lang="pt" dir="ltr">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Selecione o paciente</title>
-    <link rel="stylesheet" href="css/master.css" />
-    <link rel="icon" href="/img/favicon.ico" />
-  </head>
-  <body>
-    <header>
-      <a href="#" onclick="upload()" id="upload">
-        <img src="img/reload.png" />
-      </a>
-      <img src="img/NAACAO.png" alt="" />
-    </header>
-    <main>
-      <div class="group">
-        <input
-          type="text"
-          id="name"
-          autocomplete="off"
-          onkeyup="search()"
-          required
-        />
-        <span class="highlight"></span> <span class="bar"></span>
-        <label>Pesquisar</label>
-      </div>
-      <div id="patientList">
-        <a href="newPatient.html" class="new">NOVO PACIENTE</a>
-      </div>
-    </main>
-    <script type="text/javascript">
-      const patients = {};
 
-      document.addEventListener('DOMContentLoaded', async () => {
-        let names;
-        let arr = [];
-        if (!localStorage.toSend) {
-          document.getElementById('upload').style.display = 'none';
-        }
-        try {
-          names = await fetch(
-            `https://${
-              location.hostname
-            }/api/patients?filter[fields][id]=true&filter[fields][nome]=true&filter[order]=nome ASC`,
-            {
-              method: 'GET',
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-              },
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selecione o paciente</title>
+  <link rel="stylesheet" href="css/master.css" />
+  <link rel="icon" href="/img/favicon.ico" />
+</head>
+
+<body>
+  <header>
+    <a href="#" onclick="upload()" id="upload">
+      <img src="img/reload.png" />
+    </a>
+    <img src="img/NAACAO.png" alt="" />
+  </header>
+  <main>
+    <div class="group">
+      <input type="text" id="name" autocomplete="off" onkeyup="search()" required />
+      <span class="highlight"></span> <span class="bar"></span>
+      <label>Pesquisar</label>
+    </div>
+
+    <a href="newPatient.html" class="newPatient header">
+      NOVO PACIENTE
+    </a>
+
+    <div id="patientList" class="container"></div>
+    </div>
+  </main>
+  <script type="text/javascript">
+    const patients = {};
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      let names;
+      let arr = [];
+      if (!localStorage.toSend) {
+        document.getElementById("upload").style.display = "none";
+      }
+      try {
+        names = await fetch(
+          `https://${
+          location.hostname
+          }/api/patients?filter[fields][id]=true&filter[fields][nome]=true&filter[order]=nome ASC`,
+          {
+            method: 'GET',
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json"
             }
-          );
-          names = await names.json();
-          names.map(n => arr.push({name: n.nome, id: n.id}));
-          localStorage.setItem('patients', JSON.stringify(arr));
-        } catch (e) {
-          document.getElementById('upload').style.display = 'none';
-          names = JSON.parse(localStorage.patients);
-        }
-        const list = document.getElementById('patientList');
-        for (var i = 0; i < names.length; i++) {
-          const pat = document.createElement('a');
-          const linkText = document.createTextNode(names[i].nome);
-          pat.appendChild(linkText);
-          pat.value = names[i].name;
-          pat.href = `/newConsultation.html?nome=${names[i].nome}&id=${
-            names[i].id
+          }
+        );
+        names = await names.json();
+        names.map(n => arr.push({ name: n.nome, id: n.id }));
+        localStorage.setItem("patients", JSON.stringify(arr));
+      } catch (e) {
+        document.getElementById("upload").style.display = "none";
+        names = JSON.parse(localStorage.patients);
+      }
+
+      const list = document.getElementById("patientList");
+
+      for (var i = 0; i < names.length; i++) {
+        const pat = document.createElement("a");
+        const linkText = document.createTextNode(names[i].nome);
+
+        pat.appendChild(linkText);
+        pat.value = names[i].name;
+        pat.href = `/newConsultation.html?nome=${names[i].nome}&id=${
+          names[i].id
           }`;
-          list.appendChild(pat);
-        }
-        console.log(names);
-      });
 
-      function search() {
-        const val = document.getElementById('name').value.toUpperCase();
-        const list = document.getElementsByTagName('a');
-        for (i = 2; i < list.length; i++) {
-          if (list[i].innerText.toUpperCase().indexOf(val) > -1) {
-            list[i].style.display = '';
-          } else {
-            list[i].style.display = 'none';
-          }
-        }
+        const edit = document.createElement("a");
+        const linkTextEdit = document.createTextNode("editar");
+        edit.className = ["span3 offset2"];
+        edit.appendChild(linkTextEdit);
+        edit.value = "editar";
+        edit.href = `/edit.html?nome=${names[i].nome}&id=${names[i].id}`;
 
+        list.appendChild(pat);
+        list.append(edit);
       }
 
-      function upload() {
-        const data = JSON.parse(localStorage.toSend);
-        Promise.all(
-          data.map(async (r, i) => {
-            try {
-              const rawResponse = await fetch(
-                `https://${location.hostname}/api/patients/${
-                  r.patientId
-                }/consultations`,
-                {
-                  method: 'POST',
-                  headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(r),
-                }
-              );
-              const content = await rawResponse.json();
-              if (content.error) {
-                throw 'Erro no registro de ' + r.patientName;
+      console.log(names);
+    });
+
+    function search() {
+      const val = document.getElementById("name").value.toUpperCase();
+      const list = document.getElementsByTagName("a");
+      for (i = 2; i < list.length - 1; i++) {
+        if (list[i].innerText.toUpperCase().indexOf(val) > -1) {
+          list[i].style.display = "";
+        } else {
+          list[i].style.display = "none";
+        }
+      }
+    }
+
+    function upload() {
+      const data = JSON.parse(localStorage.toSend);
+      Promise.all(
+        data.map(async (r, i) => {
+          try {
+            const rawResponse = await fetch(
+              `https://${location.hostname}/api/patients/${
+              r.patientId
+              }/consultations`,
+              {
+                method: "POST",
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify(r)
               }
-              console.log(content);
-              data[i] = false;
-            } catch (e) {
-              alert(e);
+            );
+            const content = await rawResponse.json();
+            if (content.error) {
+              throw "Erro no registro de " + r.patientName;
             }
-          })
-        ).then(() => {
-          console.log(data);
-          alert('Registros enviados com sucesso!');
-          var myFilterArray = data.filter(Boolean);
-          if (myFilterArray.length) {
-            localStorage.setItem('toSend', JSON.stringify(myFilterArray));
-          } else {
-            localStorage.removeItem('toSend');
+            console.log(content);
+            data[i] = false;
+          } catch (e) {
+            alert(e);
           }
-        });
-      }
-    </script>
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-          navigator.serviceWorker
-            .register('service-worker.js')
-            .then(reg => {
-              console.log('Service worker registered! 😎', reg);
-            })
-            .catch(err => {
-              console.log('😥 Service worker registration failed: ', err);
-            });
-        });
-      }
-    </script>
-  </body>
+        })
+      ).then(() => {
+        console.log(data);
+        alert("Registros enviados com sucesso!");
+        var myFilterArray = data.filter(Boolean);
+        if (myFilterArray.length) {
+          localStorage.setItem("toSend", JSON.stringify(myFilterArray));
+        } else {
+          localStorage.removeItem("toSend");
+        }
+      });
+    }
+  </script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker
+          .register("service-worker.js")
+          .then(reg => {
+            console.log("Service worker registered! 😎", reg);
+          })
+          .catch(err => {
+            console.log("😥 Service worker registration failed: ", err);
+          });
+      });
+    }
+  </script>
+</body>
+
 </html>
