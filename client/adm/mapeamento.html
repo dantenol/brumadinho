@@ -20,6 +20,8 @@
         o Parque da Cachoeira. Reforçar que é voluntário e dura menos de 10
         minutos!
       </p>
+      <h3>Nome e sobrenome</h3>
+      <input id="nome" type="text" />
       <h3>A quantos anos você mora aqui no <b>Parque</b>?</h3>
       <input id="quantoTempo" type="number" />
       <small>Caso seja menos de um ano, colocar um</small>
@@ -76,8 +78,6 @@
       </select>
       <br />
       <h1>Dados do entrevistado</h1>
-      <h3>Nome e sobrenome</h3>
-      <input id="nome" type="text" />
       <h3>Endereço</h3>
       <input id="endereco" type="text" />
       <h3>Se importa de falar o ano de nascimento?</h3>
@@ -122,10 +122,27 @@
         localStorage.setItem(String(localStorage.length), JSON.stringify(data))
       }
 
-      function send() {
+      async function send() {
         let i = 1;
-        while (localStorage.leng) {
-
+        while (localStorage.length > i) {
+          const mape = localStorage[String(i)];
+          try {
+            res = await fetch(`https://${location.hostname}/api/mapeamentos`, {
+              method: 'POST',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body: mape,
+            });
+            map = await res.json();
+            console.log(map);
+            localStorage.remove
+            alert("Resposta " + i + " foi salva!!!")
+          } catch (e) {
+            alert("Resposta " + i + " não foi salva!!!")
+          }
+          i++;
         }
       }
     </script>
