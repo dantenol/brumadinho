@@ -4,6 +4,7 @@ const precacheResources = [
   'index.html',
   'newPatient.html',
   'newConsultation.html',
+  'adm/mapeamento.html',
   'css/master.css',
   'img/reload.png',
   'img/NAACAO.png',

@@ -59,5 +59,9 @@
   "attendance": {
     "dataSource": "mongodb",
     "public": true
+  },
+  "mapeamento": {
+    "dataSource": "mongodb",
+    "public": true
   }
 }
