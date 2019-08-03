@@ -142,8 +142,8 @@
               body: mape,
             });
             map = await res.json();
-            console.log(map);
-            localStorage.remove
+            console.log(res);
+            localStorage.remove(String(i));
             alert("Resposta " + i + " foi salva!!!")
           } catch (e) {
             alert("Resposta " + i + " não foi salva!!!")
