@@ -20,93 +20,100 @@
         o Parque da Cachoeira. Reforçar que é voluntário e dura menos de 10
         minutos!
       </p>
-      <h3>Nome e sobrenome</h3>
-      <input id="nome" type="text" />
-      <h3>A quantos anos você mora aqui no <b>Parque</b>?</h3>
-      <input id="quantoTempo" type="number" />
-      <small>Caso seja menos de um ano, colocar um</small>
-      <h3>De 0 a 10, o quanto você gosta de morar aqui?</h3>
-      <select id="gostaParque">
-        <option disabled selected></option>
-        <option value="0">0</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-      </select>
-      <h3>O que tem de bom, o que existe de melhor neste lugar?</h3>
-      <textarea rows="4" id="coisasBoas"></textarea>
-      <h3>O que tem de você não gosta, ou acha que falta aqui?</h3>
-      <textarea rows="4" id="coisasRuins"></textarea>
-      <h3>Qual o seu sonho para o <b>Parque</b>?</h3>
-      <textarea rows="4" id="sonho"></textarea>
-      <h3>Você e sua família tem planos de continuar morando aqui?</h3>
-      <textarea rows="4" id="continuarAqui"></textarea>
-      <br />
-      <h1>Atividade econômica</h1>
-      <h3>Qual a principal fonte de renda (sustento) da família?</h3>
-      <input id="fonteRenda" type="text" />
-      <h3>Atualmente você está empregado(a) ou empreende?</h3>
-      <select id="gostaParque">
-        <option disabled selected></option>
-        <option value="empregado">empregado</option>
-        <option value="empreende">empreende</option>
-        <option value="desempregado">desempregado</option>
-        <option value="aposentado">aposentado</option>
-      </select>
-      <h3>Se é empregado(a), trabalha com o que?</h3>
-      <input id="profissao" type="text" />
-      <h3>Você pensa em realziar alguma outra atividade que gere renda?</h3>
-      <textarea rows="4" id="atividadeRendaExtra"></textarea>
-      <h3>O que impede de realizar essa atividade?</h3>
-      <textarea rows="4" id="impeditivoAtividadeRendaExtra"></textarea>
-      <h3>O que você precisa para fazer isso se tornar realidade?</h3>
-      <textarea rows="4" id="necessidadeAtividadeRendaExtra"></textarea>
-      <h3>Quantas pessoas moram com você?</h3>
-      <textarea rows="4" id="pessoasNaCasa"></textarea>
-      <small>Crianças (0 a 12), adolescentes (13 a 17), adultos (18 a 65), idoso (mais de 65)</small>
-      <h3>Qual a faixa de renda familair?</h3>
-      <select id="renda">
-        <option disabled selected></option>
-        <option value="ate2000">Até R$2.000</option>
-        <option value="2000a4000">Entre R$2.001 e R$4.000</option>
-        <option value="4000a6000">Entre R$4.001 e R$6.000</option>
-        <option value="6000a8000">Entre R$6.001 e R$8.000</option>
-        <option value="mais8000">Mais de R$ 8.000</option>
-      </select>
-      <br />
-      <h1>Dados do entrevistado</h1>
-      <h3>Endereço</h3>
-      <input id="endereco" type="text" />
-      <h3>Se importa de falar o ano de nascimento?</h3>
-      <input id="anoNasc" type="text" />
-      <h3>Qual seu telefone?</h3>
-      <input id="tel" type="tel" />
-      <h3>Você tem email?</h3>
-      <input id="email" type="email" />
-      <h3>Qual seu grau de escolaridader?</h3>
-      <select id="escolaridade">
-        <option disabled selected></option>
-        <option value="analfabeto">Analfabeto(a)</option>
-        <option value="fundInc">Ensino fundamental incompleto</option>
-        <option value="fundComp">Ensino fundamental completo</option>
-        <option value="medioInc">Ensino médio incompleto</option>
-        <option value="medioComp">Ensino médio completo</option>
-        <option value="supInc">Superior incompleto</option>
-        <option value="supComp">Superior completo</option>
-        <option value="pos">Pos-graduação, mestrado, doutorado</option>
-        <option value="0">Não sabe ou não quer responder</option>
-      </select>
-      <button class="submit"onclick="save()">salvar</button>
-      <br>
-      <br>
-      <button class="submit"onclick="send()">enviar todos para servidor</button>
+      <form>
+        <h3>Nome e sobrenome</h3>
+        <input id="nome" type="text" />
+        <h3>A quantos anos você mora aqui no <b>Parque</b>?</h3>
+        <input id="quantoTempo" type="number" />
+        <small>Caso seja menos de um ano, colocar um</small>
+        <h3>De 0 a 10, o quanto você gosta de morar aqui?</h3>
+        <select id="gostaParque">
+          <option disabled selected></option>
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+        <h3>O que tem de bom, o que existe de melhor neste lugar?</h3>
+        <textarea rows="4" id="coisasBoas"></textarea>
+        <h3>O que tem de você não gosta, ou acha que falta aqui?</h3>
+        <textarea rows="4" id="coisasRuins"></textarea>
+        <h3>Qual o seu sonho para o <b>Parque</b>?</h3>
+        <textarea rows="4" id="sonho"></textarea>
+        <h3>Você e sua família tem planos de continuar morando aqui?</h3>
+        <textarea rows="4" id="continuarAqui"></textarea>
+        <br />
+        <h1>Atividade econômica</h1>
+        <h3>Qual a principal fonte de renda (sustento) da família?</h3>
+        <input id="fonteRenda" type="text" />
+        <h3>Atualmente você está empregado(a) ou empreende?</h3>
+        <select id="gostaParque">
+          <option disabled selected></option>
+          <option value="empregado">empregado</option>
+          <option value="empreende">empreende</option>
+          <option value="desempregado">desempregado</option>
+          <option value="aposentado">aposentado</option>
+        </select>
+        <h3>Se é empregado(a), trabalha com o que?</h3>
+        <input id="profissao" type="text" />
+        <h3>Você pensa em realziar alguma outra atividade que gere renda?</h3>
+        <textarea rows="4" id="atividadeRendaExtra"></textarea>
+        <h3>O que impede de realizar essa atividade?</h3>
+        <textarea rows="4" id="impeditivoAtividadeRendaExtra"></textarea>
+        <h3>O que você precisa para fazer isso se tornar realidade?</h3>
+        <textarea rows="4" id="necessidadeAtividadeRendaExtra"></textarea>
+        <h3>Quantas pessoas moram com você?</h3>
+        <textarea rows="4" id="pessoasNaCasa"></textarea>
+        <small
+          >Crianças (0 a 12), adolescentes (13 a 17), adultos (18 a 65), idoso
+          (mais de 65)</small
+        >
+        <h3>Qual a faixa de renda familair?</h3>
+        <select id="renda">
+          <option disabled selected></option>
+          <option value="ate2000">Até R$2.000</option>
+          <option value="2000a4000">Entre R$2.001 e R$4.000</option>
+          <option value="4000a6000">Entre R$4.001 e R$6.000</option>
+          <option value="6000a8000">Entre R$6.001 e R$8.000</option>
+          <option value="mais8000">Mais de R$ 8.000</option>
+        </select>
+        <br />
+        <h1>Dados do entrevistado</h1>
+        <h3>Endereço</h3>
+        <input id="endereco" type="text" />
+        <h3>Se importa de falar o ano de nascimento?</h3>
+        <input id="anoNasc" type="text" />
+        <h3>Qual seu telefone?</h3>
+        <input id="tel" type="tel" />
+        <h3>Você tem email?</h3>
+        <input id="email" type="email" />
+        <h3>Qual seu grau de escolaridader?</h3>
+        <select id="escolaridade">
+          <option disabled selected></option>
+          <option value="analfabeto">Analfabeto(a)</option>
+          <option value="fundInc">Ensino fundamental incompleto</option>
+          <option value="fundComp">Ensino fundamental completo</option>
+          <option value="medioInc">Ensino médio incompleto</option>
+          <option value="medioComp">Ensino médio completo</option>
+          <option value="supInc">Superior incompleto</option>
+          <option value="supComp">Superior completo</option>
+          <option value="pos">Pos-graduação, mestrado, doutorado</option>
+          <option value="0">Não sabe ou não quer responder</option>
+        </select>
+        <button type="reset" class="submit" onclick="save()">salvar</button>
+        <br />
+        <br />
+        <button class="submit" onclick="send()">
+          enviar todos para servidor
+        </button>
+      </form>
     </main>
     <script type="text/javascript">
       const data = {};
@@ -116,16 +123,16 @@
         } catch (err) {
           alert('Seu dispositivo não é compativel');
         }
-      })
+      });
 
       function save() {
         const ids = document.querySelectorAll('[id]');
-        var arr = Array.prototype.map.call( ids, function( el, i ) {
+        var arr = Array.prototype.map.call(ids, function(el, i) {
           console.log(el.id);
           data[el.id] = el.value;
         });
         data.creaetdAt = new Date();
-        localStorage.setItem(String(localStorage.length), JSON.stringify(data))
+        localStorage.setItem(String(localStorage.length), JSON.stringify(data));
       }
 
       async function send() {
@@ -143,9 +150,9 @@
             });
             console.log(res);
             localStorage.removeItem(String(i));
-            alert("Resposta " + i + " foi salva!!!")
+            alert('Resposta ' + i + ' foi salva!!!');
           } catch (e) {
-            alert("Resposta " + i + " não foi salva!!!")
+            alert('Resposta ' + i + ' não foi salva!!!');
           }
           i++;
         }
