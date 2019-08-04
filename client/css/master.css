@@ -307,3 +307,7 @@ header button {
 .listContent {
   grid-template-columns: 5fr 1fr;
 }
+
+.mapeamento input, .mapeamento button {
+  width: 100%
+}
