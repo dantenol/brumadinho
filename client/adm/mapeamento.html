@@ -88,6 +88,8 @@
         <h1>Dados do entrevistado</h1>
         <h3>Endereço</h3>
         <input id="entry.1881110870" type="text" />
+        <button type="button" onclick="getLocation()">GPS</button>
+        <p id="gps"></p>
         <h3>Se importa de falar o ano de nascimento?</h3>
         <input id="entry.1417453985" type="text" />
         <h3>Qual seu telefone?</h3>
@@ -145,6 +147,7 @@
         });
         data['entry.2012219127'] = new Date();
         localStorage.setItem(String(localStorage.length), JSON.stringify(data));
+        alert("Salvo com sucesso!");
       }
 
       serialize = function(obj) {
@@ -154,6 +157,20 @@
             str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
           }
         return str.join("&");
+      }
+
+      function getLocation() {
+        const x = document.getElementById('gps')
+        if (navigator.geolocation) {
+            function savePos(pos) {
+              x.innerHTML = "Posição capturada!"
+              data['entry.1171248248'] = "" + pos.coords.latitude + "," + pos.coords.longitude;
+            }
+            navigator.geolocation.getCurrentPosition(savePos);
+            x.innerHTML = "Negado. Autorize o acesso.";
+          } else {
+            x.innerHTML = "Não suportado :/";
+          }
       }
 
       async function send() {
