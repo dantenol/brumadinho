@@ -141,10 +141,9 @@
       function save() {
         const ids = document.querySelectorAll('[id]');
         var arr = Array.prototype.map.call(ids, function(el, i) {
-          console.log(el.id);
           data[el.id] = el.value;
         });
-        data.creaetdAt = new Date();
+        data['entry.2012219127'] = new Date();
         localStorage.setItem(String(localStorage.length), JSON.stringify(data));
       }
 
