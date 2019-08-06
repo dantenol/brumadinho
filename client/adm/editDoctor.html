@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../css/master.css" />
-    <title>Novo profissional</title>
+    <title>Editar profissional</title>
   </head>
   <body>
     <header>
@@ -93,7 +93,6 @@
           });
 
           const doc = await rawResponse.json();
-        console.log(doc);
 
         if(doc.error){
           throw "Profissional não encontrado!"
@@ -109,8 +108,6 @@
           };
           disponibilidade = doc.disponibilidade
 
-          console.log(doc)
-
           document.getElementById('number').value = data.professionalNumber;
           document.getElementById('name').value = data.name;
           document.getElementById('type').value = data.type;
@@ -119,17 +116,16 @@
           data.disponibilidade.map( opcao=>{
             document.getElementById(`${opcao}Option`).checked = true;
           })
-
         })
 
         function disp(dia) {
-            const idx = disponibilidade.indexOf(dia);
-              if (idx > -1) {
-                disponibilidade.splice(idx, 1);
-              } else {
-                disponibilidade.push(dia);
-              }
-            }
+          const idx = disponibilidade.indexOf(dia);
+            if (idx > -1) {
+              disponibilidade.splice(idx, 1);
+            } else {
+            disponibilidade.push(dia);
+          }
+        }
 
         async function send() {
           const data = {
@@ -142,15 +138,11 @@
             createdAt: new Date(),
           };
           if (!data.name || data.disponibilidade.length == 0)
-          return alert("Você precisa preencher alguns campos!");
-        const sure = confirm(
-          "Tem certeza que quer confirmar as alterações nesse profissional?"
-        );
-        if (!sure) return null;
-
-        console.log('jsonstringfydata')
-        console.log(JSON.stringify(data))
-        console.log('access token' + localStorage.access_token);
+            return alert("Você precisa preencher alguns campos!");
+          const sure = confirm(
+            "Tem certeza que quer confirmar as alterações nesse profissional?"
+          );
+          if (!sure) return null;
 
           const rawResponse = await fetch(`https://${location.hostname}/api/doctors/${id}?access_token=${localStorage.access_token}`,
              {
