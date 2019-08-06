@@ -189,7 +189,7 @@ select:focus ~ .bar:after {
   }
 }
 
-#submit {
+#submit, .submit {
   background: #52c7bc;
   border: 1px solid #787878;
   text-transform: uppercase;
@@ -306,4 +306,8 @@ header button {
 
 .listContent {
   grid-template-columns: 5fr 1fr;
+}
+
+.mapeamento input, .mapeamento button {
+  width: 100%
 }

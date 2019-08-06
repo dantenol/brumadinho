@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+     * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      function formatDate(date) {
+        var d = new Date(date),
+          dia = d.getDate().toString(),
+          diaF = dia.length == 1 ? '0' + dia : dia,
+          mes = (d.getMonth() + 1).toString(), //+1 pois no getMonth Janeiro começa com zero.
+          mesF = mes.length == 1 ? '0' + mes : mes,
+          anoF = d.getFullYear();
+        return diaF + '/' + mesF + '/' + anoF;
+      }
+      async function f() {
+        const data = [];
+        const res = await fetch(
+          'https://spreadsheets.google.com/feeds/list/1F9kJX5B2A_3XSw9I0lI-p8OT4HQDNMA_NFjGEFijALs/1/public/full?alt=json'
+        );
+        const json = await res.json();
+        json.feed.entry.map(m => {
+          data.push({
+            nome: m.gsx$nome.$t,
+            timestamp: m.gsx$datasalvo.$t,
+            criadoPor: m.gsx$quempreencheu.$t,
+            pos: m.gsx$pos.$t,
+            voltar: m.gsx$voltar.$t,
+            endereco: m.gsx$endereço.$t,
+          });
+        });
+        return data;
+      }
+      function initMap() {
+        var infowindow = new google.maps.InfoWindow();
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 15,
+          center: {lat: -20.148, lng: -44.154},
+          streetViewControl: false,
+        });
+
+        // var markers = [];
+        function placeMarker(loc) {
+          var latLng = new google.maps.LatLng(loc[1], loc[2]);
+          var marker = new google.maps.Marker({
+            position: latLng,
+            map: map,
+          });
+          // markers.push(marker);
+          google.maps.event.addListener(marker, 'click', function() {
+            infowindow.close(); // Close previously opened infowindow
+            infowindow.setContent(`<div id='infowindow'>
+              <p>
+                <b>${loc[0].nome}</b><br>
+                ${loc[0].endereco}<br>
+                ${loc[0].voltar}<br>
+                ${loc[0].criadoPor}<br>
+                ${formatDate(loc[0].timestamp)}<br>
+              </p>
+            </div>`);
+            infowindow.open(map, marker);
+          });
+        }
+        // Add a marker clusterer to manage the markers.
+        // console.log(21321);
+        locations.map(l => placeMarker(l));
+
+        // var markerCluster = new MarkerClusterer(map, markers, {
+        //   imagePath:
+        //     'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
+        // });
+      }
+
+      var locations = [];
+
+      f().then(r => {
+        r.map(d => {
+          if (d.pos.includes(',') && !d.pos.includes('undefined')) {
+            const posArr = d.pos.split(',');
+            locations.push([d, Number(posArr[0]), Number(posArr[1])]);
+          }
+        });
+        console.log(locations);
+        initMap();
+      });
+    </script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsL3WNHAxMpiV8WggMUTBHpUEouA44rRY"
+    ></script>
+  </body>
+</html>

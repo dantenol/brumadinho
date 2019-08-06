@@ -1,0 +1,208 @@
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/master.css" />
+    <title>Mapeamento</title>
+  </head>
+  <body>
+    <header>
+      <a href="home.html">&#8592;</a>
+      <img
+        src="https://naacao.com.br/wp-content/uploads/2018/03/NAACAO.png"
+        alt=""
+      />
+    </header>
+    <main class="mapeamento">
+      <p>
+        Apresentar-se, dizer que faz parte do NaAção e que está conversando com
+        moradores daqui para entender um pouco mais sobre como poder desenvolver
+        o Parque da Cachoeira. Reforçar que é voluntário e dura menos de 10
+        minutos!
+      </p>
+      <form>
+        <h3>1. Nome e sobrenome</h3>
+        <input id="entry.1751371256" type="text" />
+        <h3>2. A quantos anos você mora aqui no <b>Parque</b>?</h3>
+        <input id="entry.59086863" type="number" />
+        <small>Caso seja menos de um ano, colocar um</small>
+        <h3>3. De 0 a 10, o quanto você gosta de morar aqui?</h3>
+        <select id="entry.1819463672">
+          <option disabled selected></option>
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+        <h3>4. O que tem de bom, o que existe de melhor neste lugar?</h3>
+        <textarea rows="4" id="entry.1549624092"></textarea>
+        <h3>5. O que tem de você não gosta, ou acha que falta aqui?</h3>
+        <textarea rows="4" id="entry.1060912936"></textarea>
+        <h3>6. Qual o seu sonho para o <b>Parque</b>?</h3>
+        <textarea rows="4" id="entry.1809543049"></textarea>
+        <h3>7. Você e sua família tem planos de continuar morando aqui?</h3>
+        <textarea rows="4" id="entry.779822473"></textarea>
+        <br />
+        <h1>Atividade econômica</h1>
+        <h3>8. Qual a principal fonte de renda (sustento) da família?</h3>
+        <input id="entry.1303960035" type="text" />
+        <h3>9. Atualmente você está empregado(a) ou empreende?</h3>
+        <select id="entry.2091600845">
+          <option disabled selected></option>
+          <option value="empregado">empregado</option>
+          <option value="empreende">empreende</option>
+          <option value="desempregado">desempregado</option>
+          <option value="aposentado">aposentado</option>
+        </select>
+        <h3>10. Se é empregado(a), trabalha com o que?</h3>
+        <input id="entry.1172737209" type="text" />
+        <h3>11. Você pensa em realziar alguma outra atividade que gere renda?</h3>
+        <textarea rows="4" id="entry.670898929"></textarea>
+        <h3>12. O que impede de realizar essa atividade?</h3>
+        <textarea rows="4" id="entry.584658476"></textarea>
+        <h3>13. O que você precisa para fazer isso se tornar realidade?</h3>
+        <textarea rows="4" id="entry.1546089160"></textarea>
+        <h3>14. Quantas pessoas moram com você?</h3>
+        <textarea rows="4" id="entry.469330357"></textarea>
+        <small
+          >Crianças (0 a 12), adolescentes (13 a 17), adultos (18 a 65), idoso
+          (mais de 65)</small
+        >
+        <h3>15. Qual a faixa de renda familiar?</h3>
+        <select id="entry.2076439707">
+          <option disabled selected></option>
+          <option value="ate2000">Até R$2.000</option>
+          <option value="2000a4000">Entre R$2.001 e R$4.000</option>
+          <option value="4000a6000">Entre R$4.001 e R$6.000</option>
+          <option value="6000a8000">Entre R$6.001 e R$8.000</option>
+          <option value="mais8000">Mais de R$ 8.000</option>
+        </select>
+        <br />
+        <h1>Dados do entrevistado</h1>
+        <h3>16. Endereço</h3>
+        <input id="entry.1881110870" type="text" />
+        <button type="button" onclick="getLocation()">GPS</button>
+        <p id="gps"></p>
+        <h3>17. Se importa de falar o ano de nascimento?</h3>
+        <input id="entry.1417453985" type="text" />
+        <h3>18. Qual seu telefone?</h3>
+        <input id="entry.26107613" type="tel" />
+        <h3>19. Você tem email?</h3>
+        <input id="entry.1341777779" type="email" />
+        <h3>20. Qual seu grau de escolaridade?</h3>
+        <select id="entry.979128977">
+          <option disabled selected></option>
+          <option value="analfabeto">Analfabeto(a)</option>
+          <option value="fundInc">Ensino fundamental incompleto</option>
+          <option value="fundComp">Ensino fundamental completo</option>
+          <option value="medioInc">Ensino médio incompleto</option>
+          <option value="medioComp">Ensino médio completo</option>
+          <option value="supInc">Superior incompleto</option>
+          <option value="supComp">Superior completo</option>
+          <option value="pos">Pos-graduação, mestrado, doutorado</option>
+          <option value="0">Não sabe ou não quer responder</option>
+        </select>
+        <h3>21. Nome de quem está preenchendo?</h3>
+        <input id="entry.1220080022" type="text" />
+        <h3>22. Observações</h3>
+        <textarea rows="4" id="entry.1440583887"></textarea>
+        <h3>23. Vai ter que voltar na casa?</h3>
+        <select id="entry.1715653261">
+          <option disabled selected></option>
+          <option value="nao">Não</option>
+          <option value="naoEstava">Não tinha ninguém em casa</option>
+          <option value="outroHorario">Pediu para voltar outro horário</option>
+          <option value="outrosResidentes">Ainda não conversou com todos os residentes</option>
+          <option value="casaVazia">Não tem morador</option>
+        </select>
+        <br />
+        <button type="reset" class="submit" onclick="save()">salvar</button>
+        <br />
+        <br />
+        <button type="button" class="submit" onclick="send()">
+          enviar todos para servidor
+        </button>
+      </form>
+    </main>
+    <script type="text/javascript">
+      const data = {};
+      document.addEventListener('DOMContentLoaded', function() {
+        try {
+          new Function('(a = 0) => a');
+        } catch (err) {
+          alert('Seu dispositivo não é compativel');
+        }
+      });
+
+      function save() {
+        const ids = document.querySelectorAll('[id]');
+        var arr = Array.prototype.map.call(ids, function(el, i) {
+          data[el.id] = el.value;
+        });
+        data['entry.2012219127'] = new Date();
+        localStorage.setItem(String(localStorage.length), JSON.stringify(data));
+        alert("Salvo com sucesso!");
+      }
+
+      serialize = function(obj) {
+        var str = [];
+        for (var p in obj)
+          if (obj.hasOwnProperty(p)) {
+            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+          }
+        return str.join("&");
+      }
+
+      function getLocation() {
+        const x = document.getElementById('gps')
+        if (navigator.geolocation) {
+            function savePos(pos) {
+              x.innerHTML = "Posição capturada!"
+              data['entry.1171248248'] = "" + pos.coords.latitude + "," + pos.coords.longitude;
+            }
+            navigator.geolocation.getCurrentPosition(savePos);
+            x.innerHTML = "Negado. Autorize o acesso.";
+          } else {
+            x.innerHTML = "Não suportado :/";
+          }
+      }
+
+      async function send() {
+        let i = 1;
+        while (100 > i) {
+          const mape = localStorage[String(i)];
+          if (!mape) {
+            i++;
+            continue;
+          }
+          try {
+            const url = 'https://docs.google.com/forms/d/e/1FAIpQLSf0M-m8bt5oWynPMDNeusXRyOYVth9w0_p9Y4gv47dGhbdx3g/formResponse?'+
+            serialize(JSON.parse(mape))
+            res = await fetch(url, {
+              method: 'POST',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              mode: 'no-cors'
+            });
+            console.log(res.ok);
+            // if(!res.ok) throw 'error!';
+            localStorage.removeItem(String(i));
+            alert('Resposta ' + i + ' foi salva!!!');
+          } catch (e) {
+            alert('Resposta ' + i + ' não foi salva!!!');
+          }
+          i++;
+        }
+      }
+    </script>
+  </body>
+</html>
