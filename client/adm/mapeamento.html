@@ -167,9 +167,19 @@
       function getLocation() {
         const x = document.getElementById('gps');
         if (navigator.geolocation) {
-            function savePos(pos) {
-              x.innerHTML = "Posição capturada!"
-              data['entry.1171248248'] = "" + pos.coords.latitude + "," + pos.coords.longitude;
+          function savePos(pos) {
+            if (
+              -20.158105 < pos.coords.latitude &&
+              pos.coords.latitude < -20.135428 &&
+              -44.174291 < pos.coords.longitude &&
+              pos.coords.longitude < -44.148001
+            ) {
+              x.innerHTML = 'Posição capturada!';
+              data['entry.1171248248'] =
+              '' + pos.coords.latitude + ',' + pos.coords.longitude;
+              return;
+            } else {
+              x.innerHTML = 'Parece que você não está em Brumadinho!';
             }
           }
           navigator.geolocation.getCurrentPosition(savePos);
