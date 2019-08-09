@@ -63,7 +63,9 @@
         </select>
         <h3>10. Se é empregado(a), trabalha com o que?</h3>
         <input id="entry.1172737209" type="text" />
-        <h3>11. Você pensa em realziar alguma outra atividade que gere renda?</h3>
+        <h3>
+          11. Você pensa em realziar alguma outra atividade que gere renda?
+        </h3>
         <textarea rows="4" id="entry.670898929"></textarea>
         <h3>12. O que impede de realizar essa atividade?</h3>
         <textarea rows="4" id="entry.584658476"></textarea>
@@ -119,7 +121,9 @@
           <option value="nao">Não</option>
           <option value="naoEstava">Não tinha ninguém em casa</option>
           <option value="outroHorario">Pediu para voltar outro horário</option>
-          <option value="outrosResidentes">Ainda não conversou com todos os residentes</option>
+          <option value="outrosResidentes"
+            >Ainda não conversou com todos os residentes</option
+          >
           <option value="casaVazia">Não tem morador</option>
         </select>
         <br />
@@ -148,30 +152,31 @@
         });
         data['entry.2012219127'] = new Date();
         localStorage.setItem(String(localStorage.length), JSON.stringify(data));
-        alert("Salvo com sucesso!");
+        alert('Salvo com sucesso!');
       }
 
       serialize = function(obj) {
         var str = [];
         for (var p in obj)
           if (obj.hasOwnProperty(p)) {
-            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+            str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
           }
-        return str.join("&");
-      }
+        return str.join('&');
+      };
 
       function getLocation() {
-        const x = document.getElementById('gps')
+        const x = document.getElementById('gps');
         if (navigator.geolocation) {
             function savePos(pos) {
               x.innerHTML = "Posição capturada!"
               data['entry.1171248248'] = "" + pos.coords.latitude + "," + pos.coords.longitude;
             }
-            navigator.geolocation.getCurrentPosition(savePos);
-            x.innerHTML = "Negado. Autorize o acesso.";
-          } else {
-            x.innerHTML = "Não suportado :/";
           }
+          navigator.geolocation.getCurrentPosition(savePos);
+          x.innerHTML = 'Negado. Autorize o acesso.';
+        } else {
+          x.innerHTML = 'Não suportado :/';
+        }
       }
 
       async function send() {
@@ -183,15 +188,16 @@
             continue;
           }
           try {
-            const url = 'https://docs.google.com/forms/d/e/1FAIpQLSf0M-m8bt5oWynPMDNeusXRyOYVth9w0_p9Y4gv47dGhbdx3g/formResponse?'+
-            serialize(JSON.parse(mape))
+            const url =
+              'https://docs.google.com/forms/d/e/1FAIpQLSf0M-m8bt5oWynPMDNeusXRyOYVth9w0_p9Y4gv47dGhbdx3g/formResponse?' +
+              serialize(JSON.parse(mape));
             res = await fetch(url, {
               method: 'POST',
               headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded',
               },
-              mode: 'no-cors'
+              mode: 'no-cors',
             });
             console.log(res.ok);
             // if(!res.ok) throw 'error!';
